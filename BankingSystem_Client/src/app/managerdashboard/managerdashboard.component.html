@@ -1,0 +1,21 @@
+<div class="container mt-4">
+    <h2>Manager Dashboard</h2>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="customer-list">Customer List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="approval-list">Pending Approvals</a>
+      </li>
+    </ul>
+  
+    <div class="tab-content">
+      <div id="customerList" class="tab-pane fade show active">
+        <app-customer-list></app-customer-list>
+      </div>
+      <div id="approvalList" class="tab-pane fade">
+        <app-approval-list></app-approval-list>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,63 @@
+<div class="container mt-4">
+    <h3>Pending Approvals</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of pendingApprovals">
+          <td>{{ customer.cusId }}</td>
+          <td>{{ customer.fname }} {{ customer.lname }}</td>
+          <td>{{ customer.emailId }}</td>
+          <td>{{ customer.mobileNo }}</td>
+          <td>
+            <button (click)="approve(customer.cusId)" class="btn btn-success btn-sm">Approve</button>
+            <button (click)="reject(customer.cusId)" class="btn btn-danger btn-sm">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Approval Success Modal -->
+    <div class="modal fade" id="approveSuccessModal" tabindex="-1" aria-labelledby="approveSuccessModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="approveSuccessModalLabel">Approval Success</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Customer request has been approved!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="onModalClose('approve')">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Rejection Success Modal -->
+    <div class="modal fade" id="rejectSuccessModal" tabindex="-1" aria-labelledby="rejectSuccessModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rejectSuccessModalLabel">Rejection Success</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Customer request has been rejected!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="onModalClose('reject')">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

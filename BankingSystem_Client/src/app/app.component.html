@@ -1,0 +1,82 @@
+<!-- app.component.html -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand" routerLink="/">
+      <i class="bi bi-bank2"></i> InfinityBank
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">
+            <i class="bi bi-house-door"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">
+            <i class="bi bi-person-plus"></i> Register
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link login-btn" routerLink="/login" routerLinkActive="active">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand">
+          <i class="bi bi-bank2"></i>
+          <h4>InfinityBank</h4>
+        </div>
+        <p class="footer-text">Your trusted partner in secure and innovative banking solutions.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="about"><i class="bi bi-chevron-right"></i> About Us</a></li>
+          <li><a href="bankservice"><i class="bi bi-chevron-right"></i> Services</a></li>
+          <li><a href="contact"><i class="bi bi-chevron-right"></i> Contact</a></li>
+          <li><a href="support"><i class="bi bi-chevron-right"></i> Support</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact Info</h5>
+        <ul class="footer-contact">
+          <li><i class="bi bi-geo-alt"></i> 21 Shanku Marg, Freeganj Ujjain</li>
+          <li><i class="bi bi-telephone"></i> +919826401234</li>
+          <li><i class="bi bi-envelope"></i> support&#64;InfinityBank.com</li>
+        </ul>
+        <div class="social-links">
+          <a href="www.facebook.com"><i class="bi bi-facebook"></i></a>
+          <a href="www.twitter.com"><i class="bi bi-twitter"></i></a>
+          <a href="www.linkedin.com"><i class="bi bi-linkedin"></i></a>
+          <a href="www.instagram.com"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 InfinityBank. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

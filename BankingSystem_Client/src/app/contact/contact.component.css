@@ -1,0 +1,140 @@
+/* contact.component.css */
+.contact-hero {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 100px 0;
+    color: white;
+    margin-bottom: 80px;
+  }
+  
+  .contact-methods {
+    margin-bottom: 80px;
+  }
+  
+  .contact-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: rgba(30, 60, 114, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e3c72;
+  }
+  
+  .contact-detail {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e3c72;
+  }
+  
+  .contact-hours {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .contact-form-section {
+    margin-bottom: 80px;
+  }
+  
+  .contact-form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: 100%;
+  }
+  
+  .contact-info-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: 100%;
+  }
+  
+  .location-card {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .location-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .services-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .service-tag {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+  }
+  
+  .map-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 80px;
+  }
+  
+  .form-control, .form-select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 0 0.2rem rgba(30, 60, 114, 0.25);
+  }
+  
+  .btn-primary {
+    background-color: #1e3c72;
+    border-color: #1e3c72;
+    padding: 12px 30px;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2a5298;
+    border-color: #2a5298;
+  }
+  
+  @media (max-width: 992px) {
+    .contact-info-card {
+      margin-top: 30px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .contact-hero {
+      padding: 60px 0;
+    }
+  
+    .contact-form-card,
+    .contact-info-card {
+      padding: 20px;
+    }
+  }

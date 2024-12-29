@@ -1,0 +1,97 @@
+<!-- support.component.html -->
+<main>
+    <!-- Hero Section -->
+    <section class="support-hero">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h1 class="display-4 fw-bold mb-4">How Can We Help You?</h1>
+            <p class="lead mb-5">We're here to provide you with the support you need, when you need it.</p>
+            <div class="search-box">
+              <div class="input-group">
+                <input type="text" class="form-control form-control-lg" placeholder="Search for help...">
+                <button class="btn btn-primary btn-lg" type="button">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Contact Methods -->
+    <section class="contact-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Get in Touch</h2>
+        <div class="row g-4">
+          <div class="col-md-4" *ngFor="let method of contactMethods">
+            <div class="contact-card">
+              <div class="icon-wrapper mb-4">
+                <i [class]="method.icon + ' fs-1'"></i>
+              </div>
+              <h3 class="card-title mb-3">{{method.title}}</h3>
+              <p class="contact-detail mb-2">{{method.detail}}</p>
+              <p class="contact-description">{{method.description}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- FAQ Categories -->
+    <section class="faq-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Support Categories</h2>
+        <div class="row g-4">
+          <div class="col-md-4" *ngFor="let category of faqCategories">
+            <div class="faq-card">
+              <div class="icon-wrapper mb-4">
+                <i [class]="category.icon + ' fs-1'"></i>
+              </div>
+              <h3 class="card-title mb-4">{{category.title}}</h3>
+              <ul class="faq-list">
+                <li *ngFor="let faq of category.faqs">{{faq}}</li>
+              </ul>
+              <button class="btn btn-outline-primary mt-3 w-100">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Support Form -->
+    <section class="support-form-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="form-card">
+              <h2 class="text-center mb-4">Send Us a Message</h2>
+              <form>
+                <div class="mb-3">
+                  <label class="form-label">Name</label>
+                  <input type="text" class="form-control" placeholder="Enter your name">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Subject</label>
+                  <select class="form-select">
+                    <option>General Inquiry</option>
+                    <option>Technical Support</option>
+                    <option>Account Issues</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label">Message</label>
+                  <textarea class="form-control" rows="5" placeholder="How can we help you?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>

@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <h3>Customer List</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <!-- <th>Title</th> -->
+          <th>Name</th>
+          <!-- <th>Mobile number</th> -->
+          <th>Email</th>
+          <th>Aadhaar Number</th>
+          <th>Pancard Number</th>
+          <!-- <th>Date of Birth</th> -->
+          <th>Occupation Type</th>
+          <th>Source of Income</th>
+          <th>Gross Annual Income</th>
+          <th>Debit Card</th>
+          <!-- <th>Net Banking</th> -->
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers">
+          <td>{{ customer.cusId }}</td>
+          <td>{{ customer.fname }} {{ customer.lname }}</td>
+          <!-- <td>{{ customer.mobileNo }}</td> -->
+          <td>{{ customer.emailId }}</td>
+          <td>{{ customer.aadhaarNo }}</td>
+          <td>{{ customer.panCardNo }}</td>
+          <!-- <td>{{ customer.dob }}</td> -->
+          <td>{{ customer.occupationType }}</td>
+          <td>{{ customer.sourceOfIncome }}</td>
+          <td>{{ customer.grossAnnualIncome }}</td>
+          <td>{{ customer.debitCard }}</td>
+          <!-- <td>{{ customer.netBanking }}</td> -->
+          <td>{{ customer.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

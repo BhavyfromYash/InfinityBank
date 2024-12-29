@@ -1,0 +1,137 @@
+/* support.component.css */
+.support-hero {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 100px 0;
+    color: white;
+    margin-bottom: 80px;
+  }
+  
+  .search-box {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .search-box .form-control {
+    border-radius: 30px 0 0 30px;
+    border: none;
+    padding: 15px 25px;
+  }
+  
+  .search-box .btn {
+    border-radius: 0 30px 30px 0;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  .contact-section {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .contact-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    background: rgba(30, 60, 114, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e3c72;
+  }
+  
+  .contact-detail {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e3c72;
+  }
+  
+  .contact-description {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .faq-section {
+    padding: 80px 0;
+  }
+  
+  .faq-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .faq-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .faq-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+  }
+  
+  .faq-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .support-form-section {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .form-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .form-control, .form-select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 0 0.2rem rgba(30, 60, 114, 0.25);
+  }
+  
+  @media (max-width: 768px) {
+    .support-hero {
+      padding: 60px 0;
+    }
+  
+    .form-card {
+      padding: 20px;
+    }
+  }
