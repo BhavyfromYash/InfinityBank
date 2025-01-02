@@ -9,5 +9,9 @@ namespace BankingSystem.Services
     {
         Task<Account> CreateAccountAsync(Account newAccount);
         Task<Account> GetAccountByIdAsync(int accountId);
+        Task<Account> GetAccountByUserIdAsync(int userId);
+        Task<ViewAccountStatement> ViewAccountStatementAsync(int userId);
+        Task<bool> DepositAsync(TransactionViewModel model);
+        Task<bool> WithdrawAsync(TransactionViewModel model);
     }
 }

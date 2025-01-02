@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientJsonpModule } from '@angular/common/http';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -18,6 +19,7 @@ import { AboutComponent } from './about/about.component';
 import { SupportComponent } from './support/support.component';
 import { ContactComponent } from './contact/contact.component';
 import { BankserviceComponent } from './bankservice/bankservice.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { BankserviceComponent } from './bankservice/bankservice.component';
     SupportComponent,
     ContactComponent,
     BankserviceComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,8 @@ import { BankserviceComponent } from './bankservice/bankservice.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    HttpClientJsonpModule, 
+    GoogleMapsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

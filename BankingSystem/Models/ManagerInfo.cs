@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Models
 {
-    public class Manager
+    public class ManagerInfo
     {
         [Key]
         public int Id { get; set; }
@@ -13,5 +13,9 @@ namespace BankingSystem.Models
         public string City { get; set; }
         public string BranchName { get; set; }
         public string BranchAddress { get; set; }
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }

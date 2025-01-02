@@ -8,21 +8,15 @@ import { Component } from '@angular/core';
 export class AboutComponent {
   teamMembers = [
     {
-      name: 'Sarah Johnson',
-      position: 'Chief Executive Officer',
-      description: 'With 20+ years of banking experience, Sarah leads our vision for modern banking.',
+      name: 'Bhavy Choudhary',
       image: 'assets/images/team1.jpg'
     },
     {
-      name: 'Michael Chen',
-      position: 'Chief Technology Officer',
-      description: 'Leading our digital transformation with innovative banking solutions.',
+      name: 'Yashasvi Pandya',
       image: 'assets/images/team2.jpg'
     },
     {
-      name: 'Emma Williams',
-      position: 'Head of Customer Relations',
-      description: 'Dedicated to ensuring exceptional banking experience for all customers.',
+      name: 'Shraddha Butale',
       image: 'assets/images/team3.jpg'
     }
   ];

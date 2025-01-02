@@ -14,30 +14,54 @@ namespace BankingSystem.Repository
             _context = context;
         }
 
-        public async Task<Manager> CreateManagerAsync(Manager newManager)
-        {
-            await _context.Managers.AddAsync(newManager);
+        public async Task<ManagerInfo> CreateManagerAsync(ManagerInfo managerInfo)
+        { // Fetch the User details based on UserId and assign it to managerInfo.User
+            managerInfo.User = await _context.Users.FindAsync(managerInfo.UserId);
+            if (managerInfo.User == null)
+            {
+                throw new ArgumentException("Invalid UserId");
+            }
+            _context.ManagerInfos.Add(managerInfo);
             await _context.SaveChangesAsync();
-            return newManager;
+            return managerInfo;
         }
 
-        // public async Task<IEnumerable<ManagerInfo>> GetAllManagersAsync()
-        // {
-        //     var result = await _context
-        //         .Users.FromSqlRaw("EXEC SP_GetAllManagers")
-        //         .AsEnumerable() // Perform composition on the client side
-        //         .Select(u => new ManagerInfo
-        //         {
-        //             Name = u.Name,
-        //             Email = u.Email,
-        //             MobileNo = u.MobileNo,
-        //             City = u.City,
-        //             BranchName = u.BranchName,
-        //             BranchAddress = u.BranchAddress,
-        //         })
-        //         .ToListAsync();
-        //     return result;
-        // }
+        public async Task<IEnumerable<ManagerInfo>> GetAllManagersAsync()
+        {
+            return await _context.ManagerInfos.Include(m => m.User).ToListAsync();
+        }
+
+        public async Task<ManagerInfo> GetManagerByIdAsync(int id)
+        {
+            return await _context
+                .ManagerInfos.Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<ManagerProfileViewModel> ViewManagerProfileAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || user.UserRole != "Manager")
+            {
+                return null;
+            }
+            var managerInfo = await _context.ManagerInfos.FirstOrDefaultAsync(m =>
+                m.UserId == userId
+            );
+            if (managerInfo == null)
+            {
+                return null;
+            }
+            return new ManagerProfileViewModel
+            {
+                Name = user.Name,
+                Email = user.Email,
+                MobileNo = managerInfo.MobileNo,
+                City = managerInfo.City,
+                BranchName = managerInfo.BranchName,
+                BranchAddress = managerInfo.BranchAddress,
+            };
+        }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {

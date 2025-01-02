@@ -109,21 +109,21 @@ namespace BankingSystem.Controllers
             var createdCustomer = await _customerService.CreateCustomerAsync(newCustomer);
 
             return CreatedAtAction(
-                nameof(GetCustomerById),
+                nameof(CreateCustomer),
                 new { cusId = createdCustomer.CusId },
                 createdCustomer
             );
         }
 
-        [HttpGet("customer/{cusId}")]
-        public async Task<IActionResult> GetCustomerById(int cusId)
-        {
-            var customer = await _customerService.GetCustomerByIdAsync(cusId);
-            if (customer == null)
-            {
-                return NotFound("Customer not found.");
-            }
-            return Ok(customer);
-        }
+        // [HttpGet("customer/{cusId}")]
+        // public async Task<IActionResult> GetCustomerById(int cusId)
+        // {
+        //     var customer = await _customerService.GetCustomerByIdAsync(cusId);
+        //     if (customer == null)
+        //     {
+        //         return NotFound("Customer not found.");
+        //     }
+        //     return Ok(customer);
+        // }
     }
 }

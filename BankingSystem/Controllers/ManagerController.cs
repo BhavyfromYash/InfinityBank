@@ -88,17 +88,84 @@ namespace BankingSystem.Controllers
     public class ManagerController : ControllerBase
     {
         private readonly IManagerService _managerService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<ManagerController> _logger;
 
-        public ManagerController(IManagerService managerService)
+        public ManagerController(
+            IManagerService managerService,
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<ManagerController> logger
+        )
         {
             _managerService = managerService;
+            _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateManager([FromBody] Manager manager)
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateManager([FromBody] ManagerCreationModel model)
         {
-            var result = await _managerService.CreateManagerAsync(manager);
+            if (model == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString))
+            {
+                return Unauthorized("User is not logged in.");
+            }
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                _logger.LogError(
+                    "Failed to parse UserId from session. SessionId: {SessionId}",
+                    HttpContext.Session.Id
+                );
+                return Unauthorized("Invalid user session data.");
+            }
+            var newManager = new ManagerInfo
+            {
+                MobileNo = model.MobileNo,
+                City = model.City,
+                BranchName = model.BranchName,
+                BranchAddress = model.BranchAddress,
+                UserId = userId,
+            };
+            var result = await _managerService.CreateManagerAsync(newManager);
             return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllManagers()
+        {
+            var managers = await _managerService.GetAllManagersAsync();
+            return Ok(managers);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetManagerById(int id)
+        {
+            var manager = await _managerService.GetManagerByIdAsync(id);
+            if (manager == null)
+            {
+                return NotFound("Manager not found.");
+            }
+            return Ok(manager);
+        }
+
+        [HttpGet("profile")]
+        public async Task<IActionResult> ViewProfile()
+        {
+            var userIdString = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return Unauthorized(new { Message = "User is not logged in or invalid session." });
+            }
+            var profile = await _managerService.ViewManagerProfileAsync(userId);
+            if (profile == null)
+            {
+                return NotFound(new { Message = "Manager profile not found." });
+            }
+            return Ok(profile);
         }
 
         [HttpGet("customers")]

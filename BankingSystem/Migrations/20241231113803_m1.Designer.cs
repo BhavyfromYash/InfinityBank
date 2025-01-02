@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20241228120152_m1")]
+    [Migration("20241231113803_m1")]
     partial class m1
     {
         /// <inheritdoc />
@@ -314,7 +314,7 @@ namespace BankingSystem.Migrations
                     b.ToTable("LogOuts");
                 });
 
-            modelBuilder.Entity("BankingSystem.Models.Manager", b =>
+            modelBuilder.Entity("BankingSystem.Models.ManagerInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -322,21 +322,30 @@ namespace BankingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("BranchAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("BranchName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MobileNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Managers");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ManagerInfos");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.NetUser", b =>
@@ -379,6 +388,34 @@ namespace BankingSystem.Migrations
                     b.HasKey("NetId");
 
                     b.ToTable("NetUsers");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.Transaction", b =>
+                {
+                    b.Property<int>("TransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TransactionId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.User", b =>
@@ -448,6 +485,33 @@ namespace BankingSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.ManagerInfo", b =>
+                {
+                    b.HasOne("BankingSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.Transaction", b =>
+                {
+                    b.HasOne("BankingSystem.Models.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.Account", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

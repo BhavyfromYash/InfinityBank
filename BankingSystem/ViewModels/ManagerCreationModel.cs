@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.ViewModels
 {
-    public class ManagerInfo
+    public class ManagerCreationModel
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
         public string MobileNo { get; set; }
         public string City { get; set; }
         public string BranchName { get; set; }

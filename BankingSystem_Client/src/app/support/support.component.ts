@@ -10,13 +10,13 @@ export class SupportComponent {
     {
       title: '24/7 Phone Support',
       icon: 'bi bi-telephone-fill',
-      detail: '1-800-123-4567',
+      detail: '18005690',
       description: 'Available round the clock for urgent assistance'
     },
     {
       title: 'Email Support',
       icon: 'bi bi-envelope-fill',
-      detail: 'support@securebank.com',
+      detail: 'support@infinitybank.com',
       description: 'Response within 24 hours'
     },
     {

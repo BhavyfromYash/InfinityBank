@@ -7,11 +7,11 @@ namespace BankingSystem.Services
 {
     public interface IManagerService
     {
-        Task<Manager> CreateManagerAsync(Manager newManager);
+        Task<ManagerInfo> CreateManagerAsync(ManagerInfo newManager);
 
-        // Task<IEnumerable<ManagerInfo>> GetAllManagersAsync();
-
-        // Task<Manager> ViewProfileAsync(int Id);
+        Task<IEnumerable<ManagerInfo>> GetAllManagersAsync();
+        Task<ManagerInfo> GetManagerByIdAsync(int id);
+        Task<ManagerProfileViewModel> ViewManagerProfileAsync(int userId);
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
         Task<Customer> ApproveCustomerRequestAsync(int cusId);
         Task<Customer> RejectCustomerRequestAsync(int cusId);
