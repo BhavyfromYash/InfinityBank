@@ -26,6 +26,9 @@ namespace BankingSystem.ViewModels
         public string BranchName { get; set; }
 
         [Required]
+        public string BranchAddress { get; set; }
+
+        [Required]
         public DateTime ToDate { get; set; }
 
         [Required]

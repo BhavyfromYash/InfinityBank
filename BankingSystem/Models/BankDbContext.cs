@@ -13,7 +13,6 @@ namespace BankingSystem.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<NetUser> NetUsers { get; set; }
         public DbSet<LogOut> LogOuts { get; set; }
         public DbSet<ForgotPassword> ForgotPassword { get; set; }
         public DbSet<ManagerInfo> ManagerInfos { get; set; }
@@ -23,5 +22,6 @@ namespace BankingSystem.Models
         public DbSet<ForgotUserId> ForgotUserId { get; set; }
         public DbSet<UserAccountStatus> UserAccountStatus { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<AccountDetailsViewModel> ViewAccountDetails { get; set; }
     }
 }

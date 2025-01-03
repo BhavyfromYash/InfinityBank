@@ -15,6 +15,7 @@ builder.Services.AddScoped<IUserService, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountRepository>();
 builder.Services.AddScoped<IManagerService, ManagerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerRepository>();
+builder.Services.AddScoped<IFundTransferService, FundTransferRepository>();
 
 builder.Services.AddCors(setup =>
 {

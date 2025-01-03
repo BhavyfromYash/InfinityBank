@@ -12,6 +12,11 @@ namespace BankingSystem.Services
         Task<Account> GetAccountByUserIdAsync(int userId);
         Task<ViewAccountStatement> ViewAccountStatementAsync(int userId);
         Task<bool> DepositAsync(TransactionViewModel model);
-        Task<bool> WithdrawAsync(TransactionViewModel model);
+        Task<(bool isSuccess, string message)> WithdrawAsync(
+            TransactionViewModel model,
+            int UserId
+        );
+        Task<AccountSummaryViewModel> GetAccountSummaryAsync(int userId);
+        Task<AccountDetailsViewModel> GetAccountDetailsAsync(int userId);
     }
 }

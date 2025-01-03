@@ -134,26 +134,6 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NetUsers",
-                columns: table => new
-                {
-                    NetId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CusId = table.Column<int>(type: "int", nullable: false),
-                    LastLoginTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LoginAttempts = table.Column<int>(type: "int", nullable: false),
-                    AccountLockStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NetUsers", x => x.NetId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserAccountStatus",
                 columns: table => new
                 {
@@ -187,6 +167,29 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ViewAccountDetails",
+                columns: table => new
+                {
+                    AccountNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HolderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CusId = table.Column<int>(type: "int", nullable: false),
+                    PanCardNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AadhaarNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccCreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BranchAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchPhoneNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchEmailId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ViewAccountDetails", x => x.AccountNumber);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
@@ -196,15 +199,16 @@ namespace BankingSystem.Migrations
                     AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CusId = table.Column<int>(type: "int", nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ToDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FromDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BranchPhoneNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BranchEmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AccCreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    AccCreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -303,13 +307,13 @@ namespace BankingSystem.Migrations
                 name: "ManagerInfos");
 
             migrationBuilder.DropTable(
-                name: "NetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "UserAccountStatus");
+
+            migrationBuilder.DropTable(
+                name: "ViewAccountDetails");
 
             migrationBuilder.DropTable(
                 name: "Users");

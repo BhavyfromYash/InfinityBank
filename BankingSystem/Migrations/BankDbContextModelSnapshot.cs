@@ -44,6 +44,10 @@ namespace BankingSystem.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("BranchAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BranchEmailId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -345,48 +349,6 @@ namespace BankingSystem.Migrations
                     b.ToTable("ManagerInfos");
                 });
 
-            modelBuilder.Entity("BankingSystem.Models.NetUser", b =>
-                {
-                    b.Property<int>("NetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NetId"));
-
-                    b.Property<string>("AccountLockStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CusId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LastLoginTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LoginAttempts")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NetId");
-
-                    b.ToTable("NetUsers");
-                });
-
             modelBuilder.Entity("BankingSystem.Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
@@ -471,6 +433,61 @@ namespace BankingSystem.Migrations
                     b.HasKey("UserAccountStatusId");
 
                     b.ToTable("UserAccountStatus");
+                });
+
+            modelBuilder.Entity("BankingSystem.ViewModels.AccountDetailsViewModel", b =>
+                {
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AadhaarNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AccCreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BranchAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BranchEmailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BranchPhoneNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IFSC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PanCardNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AccountNumber");
+
+                    b.ToTable("ViewAccountDetails");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Account", b =>
