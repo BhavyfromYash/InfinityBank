@@ -84,6 +84,8 @@ namespace BankingSystem.Migrations
 
                     b.HasIndex("CusId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Accounts");
                 });
 
@@ -128,21 +130,7 @@ namespace BankingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BenId"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("BankName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BenAccNo")
-                        .HasColumnType("int");
-
                     b.Property<string>("BenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BranchName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -150,14 +138,11 @@ namespace BankingSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IFSC")
+                    b.Property<string>("MobileNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MobileNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remarks")
+                    b.Property<string>("TransferType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -290,6 +275,52 @@ namespace BankingSystem.Migrations
                     b.HasKey("TransId");
 
                     b.ToTable("FundsTransfer");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.FundTransferBeneficiary", b =>
+                {
+                    b.Property<int>("FundsTransferBenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FundsTransferBenId"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BenId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfirmAccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IFSC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FundsTransferBenId");
+
+                    b.HasIndex("BenId");
+
+                    b.ToTable("FundTransferBeneficiaries");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.LogOut", b =>
@@ -435,6 +466,28 @@ namespace BankingSystem.Migrations
                     b.ToTable("UserAccountStatus");
                 });
 
+            modelBuilder.Entity("BankingSystem.Models.WithinBankBeneficiary", b =>
+                {
+                    b.Property<int>("WithinBankBenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WithinBankBenId"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WithinBankBenId");
+
+                    b.HasIndex("BenId");
+
+                    b.ToTable("WithinBankBeneficiaries");
+                });
+
             modelBuilder.Entity("BankingSystem.ViewModels.AccountDetailsViewModel", b =>
                 {
                     b.Property<string>("AccountNumber")
@@ -498,7 +551,26 @@ namespace BankingSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BankingSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.FundTransferBeneficiary", b =>
+                {
+                    b.HasOne("BankingSystem.Models.Beneficiary", "Beneficiary")
+                        .WithMany()
+                        .HasForeignKey("BenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Beneficiary");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.ManagerInfo", b =>
@@ -521,6 +593,17 @@ namespace BankingSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("BankingSystem.Models.WithinBankBeneficiary", b =>
+                {
+                    b.HasOne("BankingSystem.Models.Beneficiary", "Beneficiary")
+                        .WithMany()
+                        .HasForeignKey("BenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Beneficiary");
                 });
 
             modelBuilder.Entity("BankingSystem.Models.Account", b =>

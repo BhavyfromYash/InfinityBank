@@ -9,8 +9,22 @@ namespace BankingSystem.Services
     {
         Task<Beneficiary> AddBeneficiaryAsync(Beneficiary beneficiary);
 
-        Task<Beneficiary> GetBeneficiaryAsync(int id);
+        Task<Beneficiary> GetBeneficiaryByIdAsync(int id);
 
         Task<Beneficiary> DeleteBeneficiaryAsync(int id);
+
+        Task<ShowAccountBalance> ShowAccountBalanceAsync(int userId);
+
+        Task TransferFundsAsync(
+            FundTransferBeneficiary fundTransferBeneficiary,
+            decimal amount,
+            string remarks
+        );
+        Task TransferFundsWithinBankAsync(
+            WithinBankBeneficiary withinBankBeneficiary,
+            decimal amount,
+            string remarks,
+            string transMode
+        );
     }
 }

@@ -35,14 +35,9 @@ namespace BankingSystem.Migrations
                     BenId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BenName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BenAccNo = table.Column<int>(type: "int", nullable: false),
-                    IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MobileNo = table.Column<int>(type: "int", nullable: false),
+                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TransferType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,6 +185,52 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FundTransferBeneficiaries",
+                columns: table => new
+                {
+                    FundsTransferBenId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BenId = table.Column<int>(type: "int", nullable: false),
+                    ConfirmAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FundTransferBeneficiaries", x => x.FundsTransferBenId);
+                    table.ForeignKey(
+                        name: "FK_FundTransferBeneficiaries_Beneficiaries_BenId",
+                        column: x => x.BenId,
+                        principalTable: "Beneficiaries",
+                        principalColumn: "BenId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WithinBankBeneficiaries",
+                columns: table => new
+                {
+                    WithinBankBenId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BenId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WithinBankBeneficiaries", x => x.WithinBankBenId);
+                    table.ForeignKey(
+                        name: "FK_WithinBankBeneficiaries_Beneficiaries_BenId",
+                        column: x => x.BenId,
+                        principalTable: "Beneficiaries",
+                        principalColumn: "BenId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
@@ -218,6 +259,12 @@ namespace BankingSystem.Migrations
                         column: x => x.CusId,
                         principalTable: "Customers",
                         principalColumn: "CusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Accounts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -272,6 +319,16 @@ namespace BankingSystem.Migrations
                 column: "CusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Accounts_UserId",
+                table: "Accounts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FundTransferBeneficiaries_BenId",
+                table: "FundTransferBeneficiaries",
+                column: "BenId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ManagerInfos_UserId",
                 table: "ManagerInfos",
                 column: "UserId");
@@ -280,6 +337,11 @@ namespace BankingSystem.Migrations
                 name: "IX_Transactions_AccountId",
                 table: "Transactions",
                 column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WithinBankBeneficiaries_BenId",
+                table: "WithinBankBeneficiaries",
+                column: "BenId");
         }
 
         /// <inheritdoc />
@@ -289,9 +351,6 @@ namespace BankingSystem.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Beneficiaries");
-
-            migrationBuilder.DropTable(
                 name: "ForgotPassword");
 
             migrationBuilder.DropTable(
@@ -299,6 +358,9 @@ namespace BankingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "FundsTransfer");
+
+            migrationBuilder.DropTable(
+                name: "FundTransferBeneficiaries");
 
             migrationBuilder.DropTable(
                 name: "LogOuts");
@@ -316,13 +378,19 @@ namespace BankingSystem.Migrations
                 name: "ViewAccountDetails");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "WithinBankBeneficiaries");
 
             migrationBuilder.DropTable(
                 name: "Accounts");
 
             migrationBuilder.DropTable(
+                name: "Beneficiaries");
+
+            migrationBuilder.DropTable(
                 name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

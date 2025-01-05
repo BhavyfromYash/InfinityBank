@@ -23,8 +23,15 @@ namespace BankingSystem.Models
         public DateTime AccCreationDate { get; set; }
         public int UserId { get; set; }
 
+        // [ForeignKey("CusId")]
+        // public Customer Customer { get; set; }
+        // public ICollection<Transaction> Transactions { get; set; }
+
         [ForeignKey("CusId")]
         public Customer Customer { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

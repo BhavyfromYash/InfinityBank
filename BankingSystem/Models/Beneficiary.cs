@@ -9,14 +9,17 @@ namespace BankingSystem.Models
     {
         [Key]
         public int BenId { get; set; }
+
+        [Required]
         public string BenName { get; set; }
-        public int BenAccNo { get; set; }
-        public string IFSC { get; set; }
-        public string BankName { get; set; }
-        public int MobileNo { get; set; }
+
+        [Required]
+        public string MobileNo { get; set; }
+
+        [Required]
         public string Email { get; set; }
-        public string BranchName { get; set; }
-        public decimal Amount { get; set; }
-        public string Remarks { get; set; }
+
+        [Required]
+        public string TransferType { get; set; } // Within Bank and Other Bank
     }
 }

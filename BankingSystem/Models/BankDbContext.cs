@@ -23,5 +23,7 @@ namespace BankingSystem.Models
         public DbSet<UserAccountStatus> UserAccountStatus { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<AccountDetailsViewModel> ViewAccountDetails { get; set; }
+        public DbSet<FundTransferBeneficiary> FundTransferBeneficiaries { get; set; }
+        public DbSet<WithinBankBeneficiary> WithinBankBeneficiaries { get; set; }
     }
 }
