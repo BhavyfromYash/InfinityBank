@@ -127,6 +127,7 @@ namespace BankingSystem.Repository
         // }
 
         public async Task TransferFundsWithinBankAsync(
+            int senderUserId,
             WithinBankBeneficiary withinBankBeneficiary,
             decimal amount,
             string remarks,
@@ -150,29 +151,32 @@ namespace BankingSystem.Repository
 
             withinBankBeneficiary.Beneficiary = beneficiary;
 
+            // Retrieve sender account using session-based UserId
             var senderAccount = await _context.Accounts.FirstOrDefaultAsync(a =>
-                a.AccountNumber == withinBankBeneficiary.AccountNumber
+                a.UserId == senderUserId
             );
             if (senderAccount == null)
             {
                 throw new Exception("Sender account not found");
             }
             _logger.LogInformation(
-                "Sender account found: {AccountNumber}",
-                senderAccount.AccountNumber
+                "Sender account found: {AccountNumber}, Balance: {Balance}",
+                senderAccount.AccountNumber,
+                senderAccount.Balance
             );
 
+            // Ensure correct retrieval of receiver account based on beneficiary details
             var receiverAccount = await _context.Accounts.FirstOrDefaultAsync(a =>
-                a.HolderName == withinBankBeneficiary.Beneficiary.BenName
-                && a.AccountNumber == withinBankBeneficiary.AccountNumber
+                a.AccountNumber == withinBankBeneficiary.AccountNumber
             );
             if (receiverAccount == null)
             {
                 throw new Exception("Receiver account not found within the same bank");
             }
             _logger.LogInformation(
-                "Receiver account found: {AccountNumber}",
-                receiverAccount.AccountNumber
+                "Receiver account found: {AccountNumber}, Balance: {Balance}",
+                receiverAccount.AccountNumber,
+                receiverAccount.Balance
             );
 
             if (senderAccount.Balance < amount)
@@ -186,7 +190,8 @@ namespace BankingSystem.Repository
 
             // Deduct amount from sender's account
             senderAccount.Balance -= amount;
-            _context.Accounts.Update(senderAccount);
+            _context.Accounts.Attach(senderAccount);
+            _context.Entry(senderAccount).Property(a => a.Balance).IsModified = true;
             _logger.LogInformation(
                 "Deducted amount from sender's account. New balance: {Balance}",
                 senderAccount.Balance
@@ -194,7 +199,8 @@ namespace BankingSystem.Repository
 
             // Add amount to receiver's account
             receiverAccount.Balance += amount;
-            _context.Accounts.Update(receiverAccount);
+            _context.Accounts.Attach(receiverAccount);
+            _context.Entry(receiverAccount).Property(a => a.Balance).IsModified = true;
             _logger.LogInformation(
                 "Added amount to receiver's account. New balance: {Balance}",
                 receiverAccount.Balance
@@ -202,14 +208,27 @@ namespace BankingSystem.Repository
 
             // Save Transaction Details
             await _context.FundsTransfer.AddAsync(fundTransfer);
+            await _context.WithinBankBeneficiaries.AddAsync(withinBankBeneficiary);
 
             // Ensure all changes are saved
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Saved FundTransfer transaction");
+            _logger.LogInformation("Saved all changes to the database");
 
-            await _context.WithinBankBeneficiaries.AddAsync(withinBankBeneficiary);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Updated Beneficiary transaction");
+            // Verification of balances
+            var updatedSenderAccount = await _context.Accounts.FirstOrDefaultAsync(a =>
+                a.AccountId == senderAccount.AccountId
+            );
+            var updatedReceiverAccount = await _context.Accounts.FirstOrDefaultAsync(a =>
+                a.AccountId == receiverAccount.AccountId
+            );
+            _logger.LogInformation(
+                "Verified Sender's updated balance: {Balance}",
+                updatedSenderAccount.Balance
+            );
+            _logger.LogInformation(
+                "Verified Receiver's updated balance: {Balance}",
+                updatedReceiverAccount.Balance
+            );
         }
     }
 }

@@ -1,139 +1,133 @@
 <div class="register-container">
-    <div class="register-card">
-      <div class="card-header">
-        <h2><i class="bi bi-person-plus"></i> Create Account</h2>
-        <p>Join Infinity Bank today</p>
-      </div>
-  
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-        <!-- Name Field -->
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-person"></i></span>
-            <input
-              type="text"
-              id="name"
-              formControlName="name"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && registerForm.get('name')?.errors }"
-              placeholder="Enter your full name">
-          </div>
-          <div class="invalid-feedback" *ngIf="submitted && registerForm.get('name')?.errors">
-            {{ getErrorMessage('name') }}
-          </div>
-        </div>
-  
-        <!-- Email Field -->
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && registerForm.get('email')?.errors }"
-              placeholder="Enter your email">
-          </div>
-          <div class="invalid-feedback" *ngIf="submitted && registerForm.get('email')?.errors">
-            {{ getErrorMessage('email') }}
-          </div>
-        </div>
-  
-        <!-- Password Field -->
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock"></i></span>
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              formControlName="password"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && registerForm.get('password')?.errors }"
-              placeholder="Enter password">
-            <span class="input-group-text" (click)="togglePasswordVisibility()">
-              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-            </span>
-          </div>
-          <div class="invalid-feedback" *ngIf="submitted && registerForm.get('password')?.errors">
-            {{ getErrorMessage('password') }}
-          </div>
-        </div>
-  
-        <!-- Confirm Password Field -->
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="confirmPassword"
-              formControlName="confirmPassword"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && registerForm.get('confirmPassword')?.errors }"
-              placeholder="Confirm password">
-            <span class="input-group-text" (click)="togglePasswordVisibility()">
-              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-            </span>
-          </div>
-          <div class="invalid-feedback" *ngIf="submitted && registerForm.get('confirmPassword')?.errors">
-            {{ getErrorMessage('confirmPassword') }}
-          </div>
-        </div>
-  
-        <!-- User Role Field -->
-        <div class="form-group">
-          <label for="userRole">Select a User Role</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-            <select
-              id="userRole"
-              formControlName="userRole"
-              class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && registerForm.get('userRole')?.errors }">
-              <option value="" disabled selected hidden>Select a User Role</option>
-              <option value="Customer">Customer</option>
-              <option value="Manager">Manager</option>
-            </select>
-          </div>
-          <div class="invalid-feedback" *ngIf="submitted && registerForm.get('userRole')?.errors">
-            {{ getErrorMessage('userRole') }}
-          </div>
-        </div>
-  
-        <!-- Submit Button -->
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary w-100">
-            <i class="bi bi-check-circle"></i> Register
-          </button>
-        </div>
-  
-        <!-- Login Link -->
-        <div class="text-center mt-3">
-          Already have an account? <a routerLink="/login">Login here</a>
-        </div>
-      </form>
+  <div class="register-card">
+    <div class="card-header">
+      <h2><i class="bi bi-person-plus"></i> Create Account</h2>
+      <p>Join Infinity Bank today</p>
     </div>
-  
-    <!-- Success Modal -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Your account has been created successfully!
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-          </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-person"></i></span>
+          <input type="text" id="name" formControlName="name" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && registerForm.get('name')?.errors }"
+            placeholder="Enter your full name">
+        </div>
+        <div class="invalid-feedback" *ngIf="submitted && registerForm.get('name')?.errors">
+          {{ getErrorMessage('name') }}
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" id="email" formControlName="email" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && registerForm.get('email')?.errors }" placeholder="Enter your email">
+        </div>
+        <div class="invalid-feedback" *ngIf="submitted && registerForm.get('email')?.errors">
+          {{ getErrorMessage('email') }}
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && registerForm.get('password')?.errors }"
+            placeholder="Enter password">
+          <span class="input-group-text" (click)="togglePasswordVisibility()">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </span>
+        </div>
+        <div class="invalid-feedback" *ngIf="submitted && registerForm.get('password')?.errors">
+          {{ getErrorMessage('password') }}
+        </div>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+          <input [type]="showPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && registerForm.get('confirmPassword')?.errors }"
+            placeholder="Confirm password">
+          <span class="input-group-text" (click)="togglePasswordVisibility()">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </span>
+        </div>
+        <div class="invalid-feedback" *ngIf="submitted && registerForm.get('confirmPassword')?.errors">
+          {{ getErrorMessage('confirmPassword') }}
+        </div>
+      </div>
+
+      <!-- User Role Field -->
+      <div class="form-group">
+        <label for="userRole">Select a User Role</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+          <select id="userRole" formControlName="userRole" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && registerForm.get('userRole')?.errors }">
+            <option value="" disabled selected hidden>Select a User Role</option>
+            <option value="Customer">Customer</option>
+            <option value="Manager">Manager</option>
+          </select>
+        </div>
+        <div class="invalid-feedback" *ngIf="submitted && registerForm.get('userRole')?.errors">
+          {{ getErrorMessage('userRole') }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-check-circle"></i> Register
+        </button>
+      </div>
+
+      <!-- Login Link -->
+      <div class="text-center mt-3">
+        Already have an account? <a routerLink="/login">Login here</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error Modal -->
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">User Already Exists</h5> <button type="button" class="btn-close"
+            data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"> A user with this email address is already registered. Please try again with a different
+          email address. </div>
+        <div class="modal-footer"> <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-  
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your account has been created successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

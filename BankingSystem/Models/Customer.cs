@@ -24,6 +24,8 @@ namespace BankingSystem.Models
         public int GrossAnnualIncome { get; set; }
         public bool DebitCard { get; set; }
         public bool NetBanking { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } 
+        // Navigation property for Address
+        public Address Address { get; set; }
     }
 }

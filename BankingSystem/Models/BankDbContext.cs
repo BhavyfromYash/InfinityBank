@@ -11,7 +11,17 @@ namespace BankingSystem.Models
             : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Address> Address { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Customer>()
+                .HasOne(c => c.Address) // Sets up the one-to-one relationship
+                .WithOne()
+                .HasForeignKey<Customer>(c => c.CusId);
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<LogOut> LogOuts { get; set; }
         public DbSet<ForgotPassword> ForgotPassword { get; set; }

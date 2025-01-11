@@ -30,12 +30,12 @@ namespace BankingSystem.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> ViewBeneficiariesAsync(int id)
-        {
-            var result = await _fundTransferService.GetBeneficiaryByIdAsync(id);
-            return Ok(result);
-        }
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> ViewBeneficiariesAsync(int id)
+        // {
+        //     var result = await _fundTransferService.GetBeneficiaryByIdAsync(id);
+        //     return Ok(result);
+        // }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBeneficiaryAsync(int id)
@@ -161,6 +161,22 @@ namespace BankingSystem.Controllers
                 );
             }
 
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString))
+            {
+                _logger.LogWarning("User is not logged in.");
+                return Unauthorized(new { Message = "User is not logged in." });
+            }
+
+            if (!int.TryParse(userIdString, out int senderUserId))
+            {
+                _logger.LogError(
+                    "Failed to parse UserId from session. SessionId: {SessionId}",
+                    HttpContext.Session.Id
+                );
+                return Unauthorized(new { Message = "Invalid user session data." });
+            }
+
             _logger.LogInformation(
                 "Retrieving beneficiary with ID: {BenId}",
                 withinBankViewModel.BenId
@@ -188,6 +204,7 @@ namespace BankingSystem.Controllers
             _logger.LogInformation("Beneficiary assigned to WithinBankBeneficiary");
 
             await _fundTransferService.TransferFundsWithinBankAsync(
+                senderUserId,
                 withinBankBeneficiary,
                 withinBankViewModel.BenTransaction.Amount,
                 withinBankViewModel.BenTransaction.Remarks,

@@ -49,12 +49,11 @@ namespace BankingSystem.Controllers
 
             var registeredUser = await _userService.UserRegisterAsync(newUser);
             return CreatedAtAction(
-                nameof(GetUserById),
+                nameof(Register),
                 new { userId = registeredUser.UserId },
                 registeredUser
             );
         }
-
 
         [HttpPost]
         [Route("login")]
@@ -109,16 +108,16 @@ namespace BankingSystem.Controllers
             }
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserById(int userId)
-        {
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-            return Ok(user);
-        }
+        // [HttpGet("{userId}")]
+        // public async Task<IActionResult> GetUserById(int userId)
+        // {
+        //     var user = await _userService.GetUserByIdAsync(userId);
+        //     if (user == null)
+        //     {
+        //         return NotFound("User not found.");
+        //     }
+        //     return Ok(user);
+        // }
 
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateProfile(int userId, [FromBody] User updatedUser)
@@ -139,7 +138,7 @@ namespace BankingSystem.Controllers
             }
         }
 
-        [HttpGet("exists")]
+        [HttpGet("exists/{email}")]
         public async Task<IActionResult> UserExists(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -151,21 +150,70 @@ namespace BankingSystem.Controllers
             return Ok(new { Exists = exists });
         }
 
+        // [HttpPost("forgot-password")]
+        // public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
+        // {
+        //     if (string.IsNullOrWhiteSpace(model.Email))
+        //     {
+        //         return BadRequest("Email is required.");
+        //     }
+
+        //     var user = await _userService.GetUserByEmailAsync(model.Email);
+        //     if (user == null)
+        //     {
+        //         return NotFound("Email not found.");
+        //     }
+
+        //     return Ok("Email exists. Proceed to reset password.");
+        // }
+
+        // [HttpPost("reset-password")]
+        // public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest model)
+        // {
+        //     if (
+        //         string.IsNullOrWhiteSpace(model.Email)
+        //         || string.IsNullOrWhiteSpace(model.Password)
+        //         || string.IsNullOrWhiteSpace(model.ConfirmPassword)
+        //     )
+        //     {
+        //         return BadRequest("Email, new password, and confirm password are required.");
+        //     }
+
+        //     if (model.Password != model.ConfirmPassword)
+        //     {
+        //         return BadRequest("New password and confirm password do not match.");
+        //     }
+
+        //     var isPasswordUpdated = await _userService.UpdatePasswordAsync(
+        //         model.Email,
+        //         model.Password,
+        //         model.ConfirmPassword
+        //     );
+        //     if (isPasswordUpdated)
+        //     {
+        //         return Ok("Password has been updated successfully.");
+        //     }
+        //     else
+        //     {
+        //         return NotFound("Email not found.");
+        //     }
+        // }
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
         {
             if (string.IsNullOrWhiteSpace(model.Email))
             {
-                return BadRequest("Email is required.");
+                return BadRequest(new { message = "Email is required." });
             }
 
             var user = await _userService.GetUserByEmailAsync(model.Email);
             if (user == null)
             {
-                return NotFound("Email not found.");
+                return NotFound(new { message = "Email not found." });
             }
 
-            return Ok("Email exists. Proceed to reset password.");
+            return Ok(new { message = "Email exists. Proceed to reset password." });
         }
 
         [HttpPost("reset-password")]
@@ -177,12 +225,16 @@ namespace BankingSystem.Controllers
                 || string.IsNullOrWhiteSpace(model.ConfirmPassword)
             )
             {
-                return BadRequest("Email, new password, and confirm password are required.");
+                return BadRequest(
+                    new { message = "Email, new password, and confirm password are required." }
+                );
             }
 
             if (model.Password != model.ConfirmPassword)
             {
-                return BadRequest("New password and confirm password do not match.");
+                return BadRequest(
+                    new { message = "New password and confirm password do not match." }
+                );
             }
 
             var isPasswordUpdated = await _userService.UpdatePasswordAsync(
@@ -192,11 +244,11 @@ namespace BankingSystem.Controllers
             );
             if (isPasswordUpdated)
             {
-                return Ok("Password has been updated successfully.");
+                return Ok(new { message = "Password has been updated successfully." });
             }
             else
             {
-                return NotFound("Email not found.");
+                return NotFound(new { message = "Email not found." });
             }
         }
 

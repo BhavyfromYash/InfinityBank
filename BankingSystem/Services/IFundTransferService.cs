@@ -21,6 +21,7 @@ namespace BankingSystem.Services
             string remarks
         );
         Task TransferFundsWithinBankAsync(
+            int senderUserId,
             WithinBankBeneficiary withinBankBeneficiary,
             decimal amount,
             string remarks,

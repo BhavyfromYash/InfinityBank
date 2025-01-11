@@ -13,6 +13,8 @@ import { AboutComponent } from './about/about.component';
 import { SupportComponent } from './support/support.component';
 import { ContactComponent } from './contact/contact.component';
 import { BankserviceComponent } from './bankservice/bankservice.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -21,8 +23,10 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "about", component: AboutComponent },
   { path: "bankservice", component: BankserviceComponent },
-  {path:"contact",component:ContactComponent},
-  {path: "support",component:SupportComponent},
+  { path: "contact", component: ContactComponent },
+  { path: "support", component: SupportComponent },
+  { path: "forgot-password", component: ForgotPasswordComponent },
+  { path: "reset-password", component: ResetPasswordComponent },
   { path: "customerdashboard", component: CustomerdashboardComponent, canActivate: [userGuard] },
   { path: "managerdashboard", component: ManagerdashboardComponent, canActivate: [userGuard] },
   { path: "approval-list", component: ApprovalListComponent },
