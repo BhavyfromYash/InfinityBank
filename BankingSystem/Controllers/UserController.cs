@@ -55,6 +55,59 @@ namespace BankingSystem.Controllers
             );
         }
 
+        // [HttpPost]
+        // [Route("login")]
+        // public async Task<IActionResult> Login([FromBody] UserLoginModel model)
+        // {
+        //     if (model == null)
+        //     {
+        //         return BadRequest("User data is required.");
+        //     }
+        //     if (string.IsNullOrWhiteSpace(model.Email))
+        //     {
+        //         return BadRequest("Email is required.");
+        //     }
+        //     if (string.IsNullOrWhiteSpace(model.Password))
+        //     {
+        //         return BadRequest("Password is required.");
+        //     }
+        //     var user = await _userService.UserLoginAsync(model.Email, model.Password);
+        //     if (user != null)
+        //     {
+        //         HttpContext.Session.SetString("UserId", user.UserId.ToString());
+        //         HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o")); // Generate JWT token
+        //         var token = GenerateToken(user);
+        //         return Ok(
+        //             new
+        //             {
+        //                 UserId = user.UserId,
+        //                 Name = user.Name,
+        //                 Email = user.Email,
+        //                 Password = user.Password,
+        //                 ConfirmPassword = user.ConfirmPassword,
+        //                 UserRole = user.UserRole,
+        //                 OTP = user.OTP,
+        //                 Token = token,
+        //             }
+        //         );
+        //     }
+        //     else
+        //     {
+        //         var userCheck = await _userService.GetUserByEmailAsync(model.Email);
+        //         if (userCheck != null)
+        //         {
+        //             var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(
+        //                 userCheck.UserId
+        //             );
+        //             if (accountStatus != null && accountStatus.IsLocked)
+        //             {
+        //                 return Unauthorized("Your account has been locked. Consult the bank.");
+        //             }
+        //         }
+        //         return Unauthorized("Invalid email or password.");
+        //     }
+        // }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginModel model)
@@ -71,42 +124,42 @@ namespace BankingSystem.Controllers
             {
                 return BadRequest("Password is required.");
             }
+
             var user = await _userService.UserLoginAsync(model.Email, model.Password);
             if (user != null)
             {
                 HttpContext.Session.SetString("UserId", user.UserId.ToString());
-                HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o")); // Generate JWT token
+                HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o"));
                 var token = GenerateToken(user);
-                return Ok(
-                    new
-                    {
-                        UserId = user.UserId,
-                        Name = user.Name,
-                        Email = user.Email,
-                        Password = user.Password,
-                        ConfirmPassword = user.ConfirmPassword,
-                        UserRole = user.UserRole,
-                        OTP = user.OTP,
-                        Token = token,
-                    }
-                );
+                return Ok(new { UserId = user.UserId, Name = user.Name, Email = user.Email, Token = token });
             }
             else
             {
                 var userCheck = await _userService.GetUserByEmailAsync(model.Email);
+                Console.WriteLine("User is go to null"+userCheck);
                 if (userCheck != null)
                 {
-                    var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(
-                        userCheck.UserId
-                    );
-                    if (accountStatus != null && accountStatus.IsLocked)
+                    var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(userCheck.UserId);
+                    Console.WriteLine(accountStatus);
+                    if (accountStatus != null)
                     {
-                        return Unauthorized("Your account has been locked. Consult the bank.");
+                        if (accountStatus.IsLocked)
+                        {
+                            return Unauthorized("Your account has been locked. Consult the manager.");
+                        }
+
+                        accountStatus.FailedLoginAttempts++;
+                        if (accountStatus.FailedLoginAttempts >= 3)
+                        {
+                            accountStatus.IsLocked = true;
+                        }
+                        await _userService.UpdateUserAccountStatusAsync(accountStatus);
                     }
                 }
                 return Unauthorized("Invalid email or password.");
             }
         }
+
 
         // [HttpGet("{userId}")]
         // public async Task<IActionResult> GetUserById(int userId)
@@ -198,6 +251,12 @@ namespace BankingSystem.Controllers
         //         return NotFound("Email not found.");
         //     }
         // }
+        [HttpGet("viewprofile/{userId}")]
+        public async Task<IActionResult> ViewProfile(int userId)
+        {
+            var result = await _userService.ViewProfileAsync(userId);
+            return result == null ? NotFound("Profile not found.") : Ok(result);
+        }
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest model)
@@ -265,65 +324,65 @@ namespace BankingSystem.Controllers
             return Ok(user);
         }
 
-        [HttpGet("sessionexpired")]
-        public async Task<IActionResult> SessionExpired()
-        {
-            if (HttpContext.Session.GetString("UserId") == null)
-            {
-                return Unauthorized("Session is not active.");
-            }
+        // [HttpGet("sessionexpired")]
+        // public async Task<IActionResult> SessionExpired()
+        // {
+        //     if (HttpContext.Session.GetString("UserId") == null)
+        //     {
+        //         return Unauthorized("Session is not active.");
+        //     }
 
-            var lastLoginStr = HttpContext.Session.GetString("LastLogin");
-            DateTime lastLogin;
+        //     var lastLoginStr = HttpContext.Session.GetString("LastLogin");
+        //     DateTime lastLogin;
 
-            if (
-                !DateTime.TryParse(
-                    lastLoginStr,
-                    null,
-                    System.Globalization.DateTimeStyles.RoundtripKind,
-                    out lastLogin
-                )
-            )
-            {
-                return BadRequest("Invalid session data.");
-            }
+        //     if (
+        //         !DateTime.TryParse(
+        //             lastLoginStr,
+        //             null,
+        //             System.Globalization.DateTimeStyles.RoundtripKind,
+        //             out lastLogin
+        //         )
+        //     )
+        //     {
+        //         return BadRequest("Invalid session data.");
+        //     }
 
-            var now = DateTime.UtcNow;
-            if ((now - lastLogin).TotalMinutes < 3)
-            {
-                return Ok(
-                    new
-                    {
-                        LastLogin = lastLogin,
-                        SessionExpired = lastLogin.AddMinutes(3),
-                        Suggestion = "Your session is still active.",
-                    }
-                );
-            }
+        //     var now = DateTime.UtcNow;
+        //     if ((now - lastLogin).TotalMinutes < 3)
+        //     {
+        //         return Ok(
+        //             new
+        //             {
+        //                 LastLogin = lastLogin,
+        //                 SessionExpired = lastLogin.AddMinutes(3),
+        //                 Suggestion = "Your session is still active.",
+        //             }
+        //         );
+        //     }
 
-            var sessionExpired = lastLogin.AddMinutes(3);
-            var suggestion = "Your session has been expired. Login again.";
+        //     var sessionExpired = lastLogin.AddMinutes(3);
+        //     var suggestion = "Your session has been expired. Login again.";
 
-            var logOut = new LogOut
-            {
-                LastLogin = lastLogin,
-                SessionExpired = sessionExpired,
-                Suggestion = suggestion,
-            };
+        //     var logOut = new LogOut
+        //     {
+        //         LastLogin = lastLogin,
+        //         SessionExpired = sessionExpired,
+        //         Suggestion = suggestion,
+        //     };
 
-            await _userService.SaveLogoutDetailsAsync(logOut);
+        //     await _userService.SaveLogoutDetailsAsync(logOut);
 
-            HttpContext.Session.Clear();
+        //     HttpContext.Session.Clear();
 
-            return Ok(
-                new
-                {
-                    LastLogin = lastLogin,
-                    SessionExpired = sessionExpired,
-                    Suggestion = suggestion,
-                }
-            );
-        }
+        //     return Ok(
+        //         new
+        //         {
+        //             LastLogin = lastLogin,
+        //             SessionExpired = sessionExpired,
+        //             Suggestion = suggestion,
+        //         }
+        //     );
+        // }
 
         [NonAction]
         private string GenerateToken(User user)
@@ -352,6 +411,21 @@ namespace BankingSystem.Controllers
             );
             string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             return tokenString;
+        }
+
+        [HttpGet("sessionexpired")]
+        public async Task<IActionResult> SessionExpired()
+        {
+            var result = await _userService.SessionExpired();
+            if (result.Suggestion == "Session is not active.")
+            {
+                return Unauthorized(result.Suggestion);
+            }
+            if (result.Suggestion == "Invalid session data.")
+            {
+                return BadRequest(result.Suggestion);
+            }
+            return Ok(result);
         }
     }
 }

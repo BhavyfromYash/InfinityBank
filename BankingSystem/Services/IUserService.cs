@@ -19,5 +19,7 @@ namespace BankingSystem.Services
         Task<bool> SaveLogoutDetailsAsync(LogOut logOut);
         Task<UserAccountStatus> GetUserAccountStatusByUserIdAsync(int userId);
         Task UpdateUserAccountStatusAsync(UserAccountStatus status);
+        Task<SessionExpiredResult> SessionExpired(); 
+
     }
 }

@@ -20,9 +20,14 @@ import { SupportComponent } from './support/support.component';
 import { ContactComponent } from './contact/contact.component';
 import { BankserviceComponent } from './bankservice/bankservice.component';
 import { MapComponent } from './map/map.component';
-import { MainNavbarComponent } from './main-navbar/main-navbar.component';
+import { MainNavbarComponent } from './navbars/main-navbar/main-navbar.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SessionService } from './services/session.service';
+import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpireddialog.component';
+
+
 
 @NgModule({
   declarations: [
@@ -43,6 +48,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     MainNavbarComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
+    SessionExpiredPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,9 +57,11 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     HttpClientModule,
     ReactiveFormsModule,
     HttpClientJsonpModule, 
-    GoogleMapsModule
+    GoogleMapsModule,
+    NgbModule
   ],
-  providers: [{
+  providers: [SessionService,{
+    
     provide: HTTP_INTERCEPTORS,
     useClass: ManagerInterceptor,
     multi: true

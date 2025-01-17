@@ -91,15 +91,19 @@ namespace BankingSystem.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<ManagerController> _logger;
 
+        private readonly IUserService _userService;
+
         public ManagerController(
             IManagerService managerService,
             IHttpContextAccessor httpContextAccessor,
-            ILogger<ManagerController> logger
+            ILogger<ManagerController> logger,
+            IUserService userService
         )
         {
             _managerService = managerService;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _userService = userService;
         }
 
         [HttpPost("create")]
@@ -206,15 +210,32 @@ namespace BankingSystem.Controllers
             return Ok(customer);
         }
 
+        // [HttpPost("unlock/{userId}")]
+        // public async Task<IActionResult> UnlockUserAccount(int userId)
+        // {
+        //     var user = await _managerService.UnlockUserAccountAsync(userId);
+        //     if (user == null)
+        //     {
+        //         return NotFound("User not found.");
+        //     }
+        //     return Ok("User account has been unlocked.");
+        // }
+
         [HttpPost("unlock/{userId}")]
         public async Task<IActionResult> UnlockUserAccount(int userId)
         {
-            var user = await _managerService.UnlockUserAccountAsync(userId);
-            if (user == null)
+            var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(userId);
+            if (accountStatus == null)
             {
                 return NotFound("User not found.");
             }
+
+            accountStatus.IsLocked = false;
+            accountStatus.FailedLoginAttempts = 0;
+            await _userService.UpdateUserAccountStatusAsync(accountStatus);
+
             return Ok("User account has been unlocked.");
         }
+
     }
 }

@@ -15,6 +15,7 @@ import { ContactComponent } from './contact/contact.component';
 import { BankserviceComponent } from './bankservice/bankservice.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpireddialog.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: "bankservice", component: BankserviceComponent },
   { path: "contact", component: ContactComponent },
   { path: "support", component: SupportComponent },
+  {path: "sessionexpireddialog", component: SessionExpiredPopupComponent},
   { path: "forgot-password", component: ForgotPasswordComponent },
   { path: "reset-password", component: ResetPasswordComponent },
   { path: "customerdashboard", component: CustomerdashboardComponent, canActivate: [userGuard] },
