@@ -21,172 +21,325 @@ namespace BankingSystem.Controllers
             _logger = logger;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateAccount([FromBody] AccountCreationModel model)
+        // [HttpPost("create")]
+        // public async Task<IActionResult> CreateAccount([FromBody] AccountCreationModel model)
+        // {
+        //     if (model == null || !ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     var userIdString = HttpContext.Session.GetString("UserId");
+        //     if (string.IsNullOrEmpty(userIdString))
+        //     {
+        //         return Unauthorized("User is not logged in.");
+        //     }
+
+        //     if (!int.TryParse(userIdString, out int userId))
+        //     {
+        //         _logger.LogError(
+        //             "Failed to parse UserId from session. SessionId: {SessionId}",
+        //             HttpContext.Session.Id
+        //         );
+        //         return Unauthorized("Invalid user session data.");
+        //     }
+
+        //     var newAccount = new Account
+        //     {
+        //         HolderName = model.NewAccount.HolderName,
+        //         AccountNumber = model.NewAccount.AccountNumber,
+        //         CusId = model.NewAccount.CusId,
+        //         AccountType = model.NewAccount.AccountType,
+        //         IFSC = model.NewAccount.IFSC,
+        //         BranchName = model.NewAccount.BranchName,
+        //         BranchPhoneNo = model.NewAccount.BranchPhoneNo,
+        //         BranchAddress = model.NewAccount.BranchAddress,
+        //         BranchEmailId = model.NewAccount.BranchEmailId,
+        //         Balance = model.NewAccount.Balance,
+        //         AccCreationDate = DateTime.UtcNow.Date,
+        //         UserId = userId,
+        //     };
+
+        //     try
+        //     {
+        //         var result = await _accountService.CreateAccountAsync(newAccount);
+        //         return Ok(result);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex, "Error creating account for user ID: {UserId}", userId);
+        //         return StatusCode(
+        //             StatusCodes.Status500InternalServerError,
+        //             "Internal server error"
+        //         );
+        //     }
+        // }
+
+        [HttpPost("CreateAccount/{userId}")]
+        public async Task<IActionResult> CreateAccountByIdAsync(int userId, [FromBody] NewAccountModel newAccount)
         {
-            if (model == null || !ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString))
-            {
-                return Unauthorized("User is not logged in.");
-            }
-
-            if (!int.TryParse(userIdString, out int userId))
-            {
-                _logger.LogError(
-                    "Failed to parse UserId from session. SessionId: {SessionId}",
-                    HttpContext.Session.Id
-                );
-                return Unauthorized("Invalid user session data.");
-            }
-
-            var newAccount = new Account
-            {
-                HolderName = model.NewAccount.HolderName,
-                AccountNumber = model.NewAccount.AccountNumber,
-                CusId = model.NewAccount.CusId,
-                AccountType = model.NewAccount.AccountType,
-                IFSC = model.NewAccount.IFSC,
-                BranchName = model.NewAccount.BranchName,
-                ToDate = model.NewAccount.ToDate,
-                FromDate = model.NewAccount.FromDate,
-                BranchPhoneNo = model.NewAccount.BranchPhoneNo,
-                BranchAddress = model.NewAccount.BranchAddress,
-                BranchEmailId = model.NewAccount.BranchEmailId,
-                Balance = model.NewAccount.Balance,
-                AccCreationDate = DateTime.UtcNow.Date,
-                UserId = userId,
-            };
-
             try
             {
-                var result = await _accountService.CreateAccountAsync(newAccount);
+                var result = await _accountService.CreateAccountByIdAsync(userId, newAccount);
                 return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating account for user ID: {UserId}", userId);
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "Internal server error"
-                );
+                return StatusCode(500, ex.Message);
             }
         }
-
-        [HttpPost("deposit")]
-        public async Task<IActionResult> Deposit([FromBody] TransactionViewModel model)
+        [HttpGet("is-user-exists")]
+        public async Task<IActionResult> IsUserExists([FromQuery] int userId)
         {
-            if (model == null || !ModelState.IsValid)
+            var userExists = await _accountService.IsUserExistsAsync(userId);
+            if (userExists)
             {
-                return BadRequest(ModelState);
+                return Ok(true);
             }
-
-            var result = await _accountService.DepositAsync(model);
-            if (!result)
-            {
-                return BadRequest("Deposit failed.");
-            }
-
-            return Ok("Deposit successful.");
+            return NotFound($"UserId {userId} is not exist");
         }
 
-        [HttpPost("withdraw")]
-        public async Task<IActionResult> Withdraw([FromBody] TransactionViewModel model)
+        // [HttpPost("deposit")]
+        // public async Task<IActionResult> Deposit([FromBody] TransactionViewModel model)
+        // {
+        //     if (model == null || !ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     var result = await _accountService.DepositByIdAsync(model);
+        //     if (!result)
+        //     {
+        //         return BadRequest("Deposit failed.");
+        //     }
+
+        //     return Ok("Deposit successful.");
+        // }
+
+        // [HttpPost("withdraw")]
+        // public async Task<IActionResult> Withdraw([FromBody] TransactionViewModel model)
+        // {
+        //     if (model == null || !ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+        //     var userIdString = HttpContext.Session.GetString("UserId");
+        //     if (string.IsNullOrEmpty(userIdString))
+        //     {
+        //         return Unauthorized("User is not logged in.");
+        //     }
+        //     if (!int.TryParse(userIdString, out int userId))
+        //     {
+        //         _logger.LogError(
+        //             "Failed to parse UserId from session. SessionId: {SessionId}",
+        //             HttpContext.Session.Id
+        //         );
+        //         return Unauthorized("Invalid user session data.");
+        //     }
+        //     var (isSuccess, message) = await _accountService.WithdrawByIdAsync(model, userId);
+        //     if (!isSuccess)
+        //     {
+        //         return BadRequest(message);
+        //     }
+        //     _logger.LogInformation("Withdrawal successful for user ID: {UserId}", userId);
+        //     return Ok(message);
+        // }
+
+        // [HttpPost("deposit/{accountId}")]
+        // public async Task<IActionResult> Deposit([FromBody] TransactionViewModel model)
+        // {
+        //     if (model == null || !ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     var result = await _accountService.DepositByIdAsync(model);
+        //     if (!result)
+        //     {
+        //         return BadRequest("Deposit failed.");
+        //     }
+
+        //     return Ok("Deposit successful.");
+        // }
+
+        // [HttpPost("withdraw/{accountId}")]
+        // public async Task<IActionResult> Withdraw([FromBody] TransactionViewModel model)
+        // {
+        //     if (model == null || !ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+
+        //     var (isSuccess, message) = await _accountService.WithdrawByIdAsync(model);
+        //     if (!isSuccess)
+        //     {
+        //         return BadRequest(message);
+        //     }
+
+        //     return Ok("Withdrawal successful.");
+        // }
+
+        // [HttpGet("view-account-statement")]
+        // public async Task<IActionResult> ViewAccountStatement()
+        // {
+        //     var userIdString = HttpContext.Session.GetString("UserId");
+        //     if (string.IsNullOrEmpty(userIdString))
+        //     {
+        //         return Unauthorized("User is not logged in.");
+        //     }
+        //     if (!int.TryParse(userIdString, out int userId))
+        //     {
+        //         _logger.LogError(
+        //             "Failed to parse UserId from session. SessionId: {SessionId}",
+        //             HttpContext.Session.Id
+        //         );
+        //         return Unauthorized("Invalid user session data.");
+        //     }
+        //     var accountStatement = await _accountService.ViewAccountStatementAsync(userId);
+        //     if (accountStatement == null)
+        //     {
+        //         _logger.LogWarning("Account statement not found for user ID: {UserId}", userId);
+        //         return NotFound("Account statement not found.");
+        //     }
+        //     _logger.LogInformation("Account statement retrieved for user ID: {UserId}", userId);
+        //     return Ok(accountStatement);
+        // }
+
+        // [HttpGet("view-account-statement")]
+        // public async Task<IActionResult> ViewAccountStatement(int userId)
+        // {
+        //     var userIdString = HttpContext.Session.GetString("UserId");
+        //     if (string.IsNullOrEmpty(userIdString))
+        //     {
+        //         return Unauthorized("User is not logged in.");
+        //     }
+        //     if (!int.TryParse(userIdString, out int userId))
+        //     {
+        //         _logger.LogError("Failed to parse UserId from session. SessionId: {SessionId}", HttpContext.Session.Id);
+        //         return Unauthorized("Invalid user session data.");
+        //     }
+        //     var accountStatement = await _accountService.ViewAccountStatementByIdAsync(userId);
+        //     if (accountStatement == null)
+        //     {
+        //         _logger.LogWarning("Account statement not found for user ID: {UserId}", userId);
+        //         return NotFound("Account statement not found.");
+        //     }
+        //     _logger.LogInformation("Account statement retrieved for user ID: {UserId}", userId);
+        //     return Ok(accountStatement);
+        // }
+
+        // [HttpGet("view-account-statement")]
+        // public async Task<IActionResult> ViewAccountStatement([FromQuery] int userId)
+        // {
+        //     var accountStatement = await _accountService.ViewAccountStatementByIdAsync(userId);
+
+        //     if (accountStatement == null)
+        //     {
+        //         _logger.LogWarning("Account statement not found for user ID: {UserId}", userId);
+        //         return NotFound("Account statement not found.");
+        //     }
+
+        //     _logger.LogInformation("Account statement retrieved for user ID: {UserId}", userId);
+        //     return Ok(accountStatement);
+        // }
+
+        // [HttpGet("account-summary/{userId}")]
+        // public async Task<IActionResult> GetAccountSummary([FromQuery] int userId)
+        // {
+        //     var accountSummary = await _accountService.GetAccountSummaryByIdAsync(userId);
+        //     if (accountSummary == null)
+        //     {
+        //         _logger.LogWarning("Account summary not found for user ID: {UserId}", userId);
+        //         return NotFound("Account not found.");
+        //     }
+        //     _logger.LogInformation("Account summary retrieved for user ID: {UserId}", userId);
+        //     return Ok(accountSummary);
+        // }
+
+        [HttpGet("account-summary/{userId}")]
+        public async Task<IActionResult> GetAccountSummary(int userId)
         {
-            if (model == null || !ModelState.IsValid)
+            var accountSummary = await _accountService.GetAccountSummaryByIdAsync(userId);
+
+            if (accountSummary == null)
             {
-                return BadRequest(ModelState);
+                _logger.LogWarning("Account summary not found for user ID: {UserId}", userId);
+                return NotFound("Account not found.");
             }
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString))
-            {
-                return Unauthorized("User is not logged in.");
-            }
-            if (!int.TryParse(userIdString, out int userId))
-            {
-                _logger.LogError(
-                    "Failed to parse UserId from session. SessionId: {SessionId}",
-                    HttpContext.Session.Id
-                );
-                return Unauthorized("Invalid user session data.");
-            }
-            var (isSuccess, message) = await _accountService.WithdrawAsync(model, userId);
-            if (!isSuccess)
-            {
-                return BadRequest(message);
-            }
-            _logger.LogInformation("Withdrawal successful for user ID: {UserId}", userId);
-            return Ok(message);
+
+            _logger.LogInformation("Account summary retrieved for user ID: {UserId}", userId);
+            return Ok(accountSummary);
         }
 
-        [HttpGet("view-account-statement")]
-        public async Task<IActionResult> ViewAccountStatement()
+        [HttpGet("view-account-statement/{userId}")]
+        public async Task<IActionResult> ViewAccountStatement(int userId)
         {
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString))
-            {
-                return Unauthorized("User is not logged in.");
-            }
-            if (!int.TryParse(userIdString, out int userId))
-            {
-                _logger.LogError(
-                    "Failed to parse UserId from session. SessionId: {SessionId}",
-                    HttpContext.Session.Id
-                );
-                return Unauthorized("Invalid user session data.");
-            }
-            var accountStatement = await _accountService.ViewAccountStatementAsync(userId);
+            var accountStatement = await _accountService.ViewAccountStatementByIdAsync(userId);
+
             if (accountStatement == null)
             {
                 _logger.LogWarning("Account statement not found for user ID: {UserId}", userId);
                 return NotFound("Account statement not found.");
             }
+
             _logger.LogInformation("Account statement retrieved for user ID: {UserId}", userId);
             return Ok(accountStatement);
         }
 
-        [HttpGet("account-summary")]
-        public async Task<IActionResult> GetAccountSummary()
+        [HttpGet("view-account-statement/{userId}/by-date-range")]
+        public async Task<IActionResult> ViewAccountStatementByDateRange(
+            int userId,
+            DateTime fromDate,
+            DateTime toDate
+        )
         {
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString))
+            var accountStatement = await _accountService.ViewAccountStatementByDateRangeAsync(
+                userId,
+                fromDate,
+                toDate
+            );
+
+            if (accountStatement == null)
             {
-                return Unauthorized("User is not logged in.");
-            }
-            if (!int.TryParse(userIdString, out int userId))
-            {
-                _logger.LogError(
-                    "Failed to parse UserId from session. SessionId: {SessionId}",
-                    HttpContext.Session.Id
+                _logger.LogWarning(
+                    "Account statement not found for user ID: {UserId} within the specified date range",
+                    userId
                 );
-                return Unauthorized("Invalid user session data.");
+                return NotFound("Account statement not found within the specified date range.");
             }
-            var accountSummary = await _accountService.GetAccountSummaryAsync(userId);
-            if (accountSummary == null)
-            {
-                return NotFound("Account not found.");
-            }
-            return Ok(accountSummary);
+
+            _logger.LogInformation(
+                "Account statement retrieved for user ID: {UserId} within the specified date range",
+                userId
+            );
+            return Ok(accountStatement);
         }
 
-        [HttpGet("account-details")]
-        public async Task<IActionResult> GetAccountDetails()
-        { // Retrieve UserId from session
-            var userIdString = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userIdString))
+        [HttpGet("account-details/{userId}")]
+        public async Task<IActionResult> GetAccountDetails(int userId)
+        {
+            var details = await _accountService.GetAccountDetailsByIdAsync(userId);
+            if (details == null)
             {
-                return Unauthorized("User is not logged in.");
+                return NotFound("Account details not found.");
             }
-            if (!int.TryParse(userIdString, out int userId))
-            {
-                return Unauthorized("Invalid user session data.");
-            }
-            var details = await _accountService.GetAccountDetailsAsync(userId);
             return Ok(details);
         }
+
+        [HttpGet("ShowBalance/{accountId}")]
+        public async Task<IActionResult> GetAccountBalance(int accountId)
+        {
+            var account = await _accountService.GetAccountBalanceAsync(accountId);
+            if (account == null)
+            {
+                return NotFound("Account Balance not found");
+            }
+            return Ok(account);
+        }
+
     }
 }

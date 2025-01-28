@@ -1,0 +1,126 @@
+<div class="statement-container">
+  <div class="statement-card">
+    <div class="statement-header">
+        <i class="fas fa-book"></i>
+        <h2>Account Statement</h2>
+        <p class="text-muted">Transaction History</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-state text-center p-5">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+        <p class="text-muted">Loading transactions...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state text-center p-5">
+        <i class="fas fa-exclamation-circle fa-2x mb-3 text-danger"></i>
+        <p class="text-danger">{{ error }}</p>
+    </div>
+
+    <div class="date-range-container">
+        <div class="row align-items-end">
+            <div class="col-md-5">
+                <label class="form-label">
+                    <i class="fas fa-calendar-alt me-2"></i>From Date
+                </label>
+                <input 
+                    type="date" 
+                    class="form-control" 
+                    [(ngModel)]="dateFrom"
+                    (change)="onDateChange()">
+            </div>
+            <div class="col-md-5">
+                <label class="form-label">
+                    <i class="fas fa-calendar-alt me-2"></i>To Date
+                </label>
+                <input 
+                    type="date" 
+                    class="form-control" 
+                    [(ngModel)]="dateTo"
+                    (change)="onDateChange()">
+            </div>
+            <div class="col-md-2">
+                <button 
+                    type="button" 
+                    class="btn btn-submit w-100"
+                    (click)="fetchTransactions()">
+                    <i class="fas fa-search me-2"></i>View Transactions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="transactions && transactions.length > 0" class="table-container">
+        <div class="account-info mb-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><i class="fas fa-user me-2"></i><strong>Account Holder:</strong> {{ accountHolder }}</p>
+                    <p><i class="fas fa-hashtag me-2"></i><strong>Account Number:</strong> {{ accountNumber }}</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p><i class="fas fa-wallet me-2"></i><strong>Current Balance:</strong> 
+                        <span class="balance-amount">{{ currentBalance | currency:'INR' }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <table class="table transaction-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-calendar me-2"></i>Date</th>
+                    <th><i class="fas fa-exchange-alt me-2"></i>Transaction Type</th>
+                    <th><i class="fas fa-user me-2"></i>Description</th>
+                    <th><i class="fas fa-arrow-down me-2"></i>Debit (₹)</th>
+                    <th><i class="fas fa-arrow-up me-2"></i>Credit (₹)</th>
+                    <th><i class="fas fa-coins me-2"></i>Balance (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions" 
+                    [ngClass]="{'debit-row': transaction.transactionType === 'Withdraw', 'credit-row': transaction.transactionType === 'Deposit'}">
+                    <td>{{ transaction.transactionDate | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <span class="transaction-type" [ngClass]="transaction.transactionType?.toLowerCase()">
+                            <i class="fas" [ngClass]="{'fa-arrow-down': transaction.transactionType === 'Withdraw', 'fa-arrow-up': transaction.transactionType === 'Deposit'}"></i>
+                            {{ transaction.transactionType}}
+                        </span>
+                    </td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.debit ? (transaction.debit | currency:'INR') : '-' }}</td>
+                    <td>{{ transaction.credit ? (transaction.credit | currency:'INR') : '-' }}</td>
+                    <td>{{ transaction.balance | currency:'INR' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="page-info">
+                Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalTransactions) }} of {{ totalTransactions }} transactions
+            </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" (click)="changePage(currentPage - 1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pages" 
+                        [class.active]="page === currentPage">
+                        <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" (click)="changePage(currentPage + 1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div *ngIf="transactions && transactions.length === 0" class="no-transactions text-center p-5">
+        <i class="fas fa-receipt fa-3x mb-3 text-muted"></i>
+        <p class="text-muted">No transactions found for the selected date range.</p>
+    </div>
+  </div>
+</div>

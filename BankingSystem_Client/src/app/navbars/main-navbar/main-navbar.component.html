@@ -1,35 +1,38 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
+  <div class="container">
       <!-- Brand -->
       <a class="navbar-brand" routerLink="/">
-        <i class="bi bi-bank2"></i> InfinityBank
+          <i class="bi bi-bank2"></i> InfinityBank
       </a>
-  
-      <!-- Mobile Toggle -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <!-- Nav Links -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/home" routerLinkActive="active">
-              <i class="bi bi-house-door"></i> Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/register" routerLinkActive="active">
-              <i class="bi bi-person-plus"></i> Register
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link login-btn" routerLink="/login" routerLinkActive="active">
-              <i class="bi bi-box-arrow-in-right"></i> Login
-            </a>
-          </li>
-        </ul>
+
+
+      <!-- Right Side Navbar -->
+      <div class="right-navbar" [class.active]="isOpen">
+          <!-- Toggle Button -->
+          <button class="toggle-btn" (click)="toggleNav()">
+              <i class="bi" [class.bi-list]="!isOpen" [class.bi-x-lg]="isOpen"></i>
+          </button>
+
+          <!-- Nav Content -->
+          <div class="nav-content" [class.visible]="isOpen">
+              <nav class="nav-links">
+                  <a routerLink="/login" routerLinkActive="active" class="nav-item">
+                      <i class="bi bi-box-arrow-in-right"></i>
+                      <span>Login</span>
+                  </a>
+                  <a routerLink="/register" routerLinkActive="active" class="nav-item">
+                      <i class="bi bi-person-plus"></i>
+                      <span>Register</span>
+                  </a>
+                  <a routerLink="/apply" routerLinkActive="active" class="nav-item">
+                      <i class="bi bi-file-earmark-text"></i>
+                      <span>Apply Online</span>
+                  </a>
+              </nav>
+              <!-- Overlay -->
+              <div class="overlay" [class.active]="isOpen" (click)="closeNav()"></div>
+          </div>
       </div>
-    </div>
-  </nav>
+  </div>
+</nav>

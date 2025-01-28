@@ -1,0 +1,107 @@
+.account-container {
+  min-height: calc(100vh - 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+}
+
+.account-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  padding: 2.5rem;
+}
+
+.account-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e1e8ef;
+}
+
+.account-header i {
+  font-size: 3rem;
+  color: #1e3c72;
+  margin-bottom: 1rem;
+}
+
+.account-header h2 {
+  color: #1e3c72;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.detail-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-section h3 {
+  color: #1e3c72;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.1);
+}
+
+.detail-item i {
+  color: #1e3c72;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #666;
+  width: 180px;
+  margin-right: 1rem;
+}
+
+.detail-value {
+  color: #333;
+  flex-grow: 1;
+}
+
+.balance-highlight {
+  font-size: 1.5rem;
+  color: #1e3c72;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .detail-item {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .detail-label {
+      width: 100%;
+      margin-bottom: 0.5rem;
+  }
+
+  .detail-value {
+      padding-left: 2rem;
+  }
+}

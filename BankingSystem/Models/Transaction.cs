@@ -13,6 +13,7 @@ namespace BankingSystem.Models
         public decimal Amount { get; set; }
         public DateTime TransactionDate { get; set; }
         public string TransactionType { get; set; } // "Deposit" or "Withdraw"
+        public string Status {get; set;} = "Pending";
 
         [ForeignKey("AccountId")]
         public Account Account { get; set; }

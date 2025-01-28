@@ -9,12 +9,14 @@ namespace BankingSystem.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CusId { get; set; }
+        public string ReferenceNumber { get; set; }
+        public string CusId { get; set; }
         public string Title { get; set; }
         public string Fname { get; set; }
         public string Mname { get; set; }
         public string Lname { get; set; }
         public string MobileNo { get; set; }
+        // public string EmailId { get; set; }
         public string EmailId { get; set; }
         public string AadhaarNo { get; set; }
         public string PanCardNo { get; set; }
@@ -24,8 +26,9 @@ namespace BankingSystem.Models
         public int GrossAnnualIncome { get; set; }
         public bool DebitCard { get; set; }
         public bool NetBanking { get; set; }
-        public string Status { get; set; } 
-        // Navigation property for Address
+        public string Status { get; set; }
         public Address Address { get; set; }
+
+        // Upload Files 
     }
 }

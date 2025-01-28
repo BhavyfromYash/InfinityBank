@@ -1,0 +1,91 @@
+<div class="customer-form">
+    <h2>Customer Details</h2>
+    <form (ngSubmit)="onSubmit()">
+      <!-- Customer details inputs -->
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" [(ngModel)]="customer.title" name="title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" [(ngModel)]="customer.fname" name="fname" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="mname">Middle Name</label>
+        <input type="text" id="mname" [(ngModel)]="customer.mname" name="mname" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" [(ngModel)]="customer.lname" name="lname" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="mobileNo">Mobile Number</label>
+        <input type="text" id="mobileNo" [(ngModel)]="customer.mobileNo" name="mobileNo" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="emailId">Email ID</label>
+        <input type="email" id="emailId" [(ngModel)]="customer.emailId" name="emailId" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="aadhaarNo">Aadhaar Number</label>
+        <input type="text" id="aadhaarNo" [(ngModel)]="customer.aadhaarNo" name="aadhaarNo" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="panCardNo">Pan Card Number</label>
+        <input type="text" id="panCardNo" [(ngModel)]="customer.panCardNo" name="panCardNo" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" [(ngModel)]="customer.dob" name="dob" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="occupationType">Occupation Type</label>
+        <input type="text" id="occupationType" [(ngModel)]="customer.occupationType" name="occupationType" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="sourceOfIncome">Source of Income</label>
+        <input type="number" id="sourceOfIncome" [(ngModel)]="customer.sourceOfIncome" name="sourceOfIncome" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="grossAnnualIncome">Gross Annual Income</label>
+        <input type="number" id="grossAnnualIncome" [(ngModel)]="customer.grossAnnualIncome" name="grossAnnualIncome" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="debitCard">Debit Card</label>
+        <input type="checkbox" id="debitCard" [(ngModel)]="customer.debitCard" name="debitCard" class="form-check-input">
+      </div>
+      <div class="form-group">
+        <label for="netBanking">Net Banking</label>
+        <input type="checkbox" id="netBanking" [(ngModel)]="customer.netBanking" name="netBanking" class="form-check-input">
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" id="status" [(ngModel)]="customer.status" name="status" class="form-control">
+      </div>
+      <!-- Address details inputs -->
+      <div class="form-group">
+        <label for="addressLine">Address Line</label>
+        <input type="text" id="addressLine" [(ngModel)]="customer.address.addressLine" name="addressLine" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="landmark">Landmark</label>
+        <input type="text" id="landmark" [(ngModel)]="customer.address.landmark" name="landmark" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="pincode">Pincode</label>
+        <input type="text" id="pincode" [(ngModel)]="customer.address.pincode" name="pincode" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" [(ngModel)]="customer.address.city" name="city" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" id="state" [(ngModel)]="customer.address.state" name="state" class="form-control">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create Customer</button>
+      </div>
+    </form>
+  </div>
+  

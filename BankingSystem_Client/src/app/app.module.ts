@@ -10,7 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CustomerdashboardComponent } from './customerdashboard/customerdashboard.component';
+import { CustomerDashboardComponent } from './customerdashboard/customerdashboard.component';
 import { ManagerdashboardComponent } from './managerdashboard/managerdashboard.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { ApprovalListComponent } from './approval-list/approval-list.component';
@@ -26,7 +26,17 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SessionService } from './services/session.service';
 import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpireddialog.component';
-
+import { ApplyaccountComponent } from './applyaccount/applyaccount.component';
+import { CustomerService } from './services/customer.service';
+import { AccountDetailsComponent } from './account-details/account-details.component';
+import {AccountService } from './services/account.service';
+import { AccountSummaryComponent } from './account-summary/account-summary.component';
+import { AccountSummaryService } from './services/accountsummary.service';
+import { AccountStatementComponent } from './account-statement/account-statement.component';
+import { AccountStatementService } from './services/accountstatement.service';
+import { ViewBalanceComponent } from './view-balance/view-balance.component';
+import { ViewbalanceService } from './services/viewbalance.service';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
 
 
 @NgModule({
@@ -36,7 +46,7 @@ import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpi
     PagenotfoundComponent,
     RegisterComponent,
     LoginComponent,
-    CustomerdashboardComponent,
+    CustomerDashboardComponent,
     ManagerdashboardComponent,
     CustomerListComponent,
     ApprovalListComponent,
@@ -49,6 +59,12 @@ import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpi
     ResetPasswordComponent,
     ForgotPasswordComponent,
     SessionExpiredPopupComponent,
+    ApplyaccountComponent,
+    AccountDetailsComponent,
+    AccountSummaryComponent,
+    AccountStatementComponent,
+    ViewBalanceComponent,
+    CreateCustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,16 +72,17 @@ import { SessionExpiredPopupComponent } from './sessionexpireddialog/sessionexpi
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    HttpClientJsonpModule, 
+    HttpClientJsonpModule,
     GoogleMapsModule,
     NgbModule
   ],
-  providers: [SessionService,{
+  providers: [SessionService, CustomerService,AccountService,AccountSummaryService,AccountStatementService,ViewbalanceService, {
     
     provide: HTTP_INTERCEPTORS,
     useClass: ManagerInterceptor,
     multi: true
-  }],
+  },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

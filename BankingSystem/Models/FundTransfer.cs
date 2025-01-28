@@ -11,5 +11,6 @@ namespace BankingSystem.Models
         public int TransId { get; set; }
         public DateTime TransDate { get; set; }
         public string TransMode { get; set; } // NEFT , RTGS and IMPS
+
     }
 }

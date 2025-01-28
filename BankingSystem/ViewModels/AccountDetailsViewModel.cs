@@ -14,7 +14,7 @@ namespace BankingSystem.ViewModels
         public string HolderName { get; set; }
 
         [Required]
-        public int CusId { get; set; }
+        public string CusId { get; set; }
 
         [Required]
         public string PanCardNo { get; set; }

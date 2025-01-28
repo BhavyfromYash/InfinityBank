@@ -7,16 +7,25 @@ namespace BankingSystem.Services
 {
     public interface IAccountService
     {
-        Task<Account> CreateAccountAsync(Account newAccount);
+        Task<Account> CreateAccountByIdAsync(int userId, NewAccountModel newAccount);
         Task<Account> GetAccountByIdAsync(int accountId);
         Task<Account> GetAccountByUserIdAsync(int userId);
-        Task<ViewAccountStatement> ViewAccountStatementAsync(int userId);
-        Task<bool> DepositAsync(TransactionViewModel model);
-        Task<(bool isSuccess, string message)> WithdrawAsync(
-            TransactionViewModel model,
-            int UserId
+        Task<ViewAccountStatement> ViewAccountStatementByIdAsync(int userId);
+        Task<ViewAccountStatement> ViewAccountStatementByDateRangeAsync(
+            int userId,
+            DateTime fromDate,
+            DateTime toDate
         );
-        Task<AccountSummaryViewModel> GetAccountSummaryAsync(int userId);
-        Task<AccountDetailsViewModel> GetAccountDetailsAsync(int userId);
+        Task<bool> IsUserExistsAsync(int userId);
+
+        Task<bool> DepositByIdAsync(TransactionViewModel accountId);
+        Task<(bool isSuccess, string message)> WithdrawByIdAsync(
+            TransactionViewModel accountId
+
+        );
+        Task<AccountSummaryViewModel> GetAccountSummaryByIdAsync(int userId);
+        Task<AccountDetailsViewModel> GetAccountDetailsByIdAsync(int userId);
+
+        Task<ShowAccountBalance> GetAccountBalanceAsync(int accountId);
     }
 }

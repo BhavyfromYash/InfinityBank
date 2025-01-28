@@ -68,42 +68,42 @@ namespace BankingSystem.Controllers
             return Ok(account);
         }
 
-        [HttpPost("transfer")]
-        public async Task<IActionResult> TransferFundsAsync(
-            [FromBody] CreateBeneficiaryTransaction createBeneficiaryTransaction
-        )
-        {
-            if (ModelState.IsValid)
-            { // Retrieve Beneficiary by BenId
-                var beneficiary = await _fundTransferService.GetBeneficiaryByIdAsync(
-                    createBeneficiaryTransaction.BenId
-                );
-                if (beneficiary == null)
-                {
-                    return NotFound(new { Message = "Beneficiary not found." });
-                }
-                var fundTransferBeneficiary = new FundTransferBeneficiary
-                {
-                    AccountNumber = createBeneficiaryTransaction.AccountNumber,
-                    BenId = beneficiary.BenId, // Retrieve and assign the correct BenId
-                    ConfirmAccountNumber = createBeneficiaryTransaction.AccountNumber,
-                    AccountType = "Other", // Example logic
-                    IFSC = createBeneficiaryTransaction.IFSC,
-                    BankName = createBeneficiaryTransaction.BankName,
-                    BranchName = createBeneficiaryTransaction.BranchName,
-                    City = createBeneficiaryTransaction.City, // Ensure this is populated correctly
-                };
-                await _fundTransferService.TransferFundsAsync(
-                    fundTransferBeneficiary,
-                    createBeneficiaryTransaction.BenTransaction.Amount,
-                    createBeneficiaryTransaction.BenTransaction.Remarks
-                );
-                return Ok(new { Message = "Funds transferred successfully." });
-            }
-            return BadRequest(
-                new { Message = "Invalid fund transfer details.", Errors = ModelState.Values }
-            );
-        }
+        // [HttpPost("transfer")]
+        // public async Task<IActionResult> TransferFundsAsync(
+        //     [FromBody] CreateBeneficiaryTransaction createBeneficiaryTransaction
+        // )
+        // {
+        //     if (ModelState.IsValid)
+        //     { // Retrieve Beneficiary by BenId
+        //         var beneficiary = await _fundTransferService.GetBeneficiaryByIdAsync(
+        //             createBeneficiaryTransaction.BenId
+        //         );
+        //         if (beneficiary == null)
+        //         {
+        //             return NotFound(new { Message = "Beneficiary not found." });
+        //         }
+        //         var fundTransferBeneficiary = new FundTransferBeneficiary
+        //         {
+        //             AccountNumber = createBeneficiaryTransaction.AccountNumber,
+        //             BenId = beneficiary.BenId, // Retrieve and assign the correct BenId
+        //             ConfirmAccountNumber = createBeneficiaryTransaction.AccountNumber,
+        //             AccountType = "Other", // Example logic
+        //             IFSC = createBeneficiaryTransaction.IFSC,
+        //             BankName = createBeneficiaryTransaction.BankName,
+        //             BranchName = createBeneficiaryTransaction.BranchName,
+        //             City = createBeneficiaryTransaction.City, // Ensure this is populated correctly
+        //         };
+        //         await _fundTransferService.TransferFundsAsync(
+        //             fundTransferBeneficiary,
+        //             createBeneficiaryTransaction.BenTransaction.Amount,
+        //             createBeneficiaryTransaction.BenTransaction.Remarks
+        //         );
+        //         return Ok(new { Message = "Funds transferred successfully." });
+        //     }
+        //     return BadRequest(
+        //         new { Message = "Invalid fund transfer details.", Errors = ModelState.Values }
+        //     );
+        // }
 
         // [HttpPost("transfer-within-bank")]
         // public async Task<IActionResult> TransferFundsWithinBankAsync(
@@ -214,5 +214,31 @@ namespace BankingSystem.Controllers
             _logger.LogInformation("Funds transferred within bank successfully.");
             return Ok(new { Message = "Funds transferred within bank successfully." });
         }
+
+        [HttpPost("TransferFundsToOtherBankById")]
+        public async Task<IActionResult> TransferFundsToOtherBankById(
+            int senderUserId,
+            [FromBody] OtherBankViewModel otherBankViewModel,
+            string transMode
+        )
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _fundTransferService.TransferFundsToOtherBankByIdAsync(
+                    senderUserId,
+                    otherBankViewModel,
+                    transMode
+                );
+                return Ok(new { Message = "Funds transferred successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
     }
 }

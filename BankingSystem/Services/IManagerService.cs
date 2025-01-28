@@ -13,9 +13,11 @@ namespace BankingSystem.Services
         Task<ManagerInfo> GetManagerByIdAsync(int id);
         Task<ManagerProfileViewModel> ViewManagerProfileAsync(int userId);
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
-        Task<Customer> ApproveCustomerRequestAsync(int cusId);
-        Task<Customer> RejectCustomerRequestAsync(int cusId);
+        Task<Customer> ApproveCustomerRequestAsync(string cusId);
+        Task<Customer> RejectCustomerRequestAsync(string cusId);
         Task<IEnumerable<Customer>> GetPendingApprovalsAsync();
         Task<User> UnlockUserAccountAsync(int userId);
+        // Task SendReferenceNumberForApproval(string referenceNumber, string cusId);
+
     }
 }

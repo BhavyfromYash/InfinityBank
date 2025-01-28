@@ -55,59 +55,6 @@ namespace BankingSystem.Controllers
             );
         }
 
-        // [HttpPost]
-        // [Route("login")]
-        // public async Task<IActionResult> Login([FromBody] UserLoginModel model)
-        // {
-        //     if (model == null)
-        //     {
-        //         return BadRequest("User data is required.");
-        //     }
-        //     if (string.IsNullOrWhiteSpace(model.Email))
-        //     {
-        //         return BadRequest("Email is required.");
-        //     }
-        //     if (string.IsNullOrWhiteSpace(model.Password))
-        //     {
-        //         return BadRequest("Password is required.");
-        //     }
-        //     var user = await _userService.UserLoginAsync(model.Email, model.Password);
-        //     if (user != null)
-        //     {
-        //         HttpContext.Session.SetString("UserId", user.UserId.ToString());
-        //         HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o")); // Generate JWT token
-        //         var token = GenerateToken(user);
-        //         return Ok(
-        //             new
-        //             {
-        //                 UserId = user.UserId,
-        //                 Name = user.Name,
-        //                 Email = user.Email,
-        //                 Password = user.Password,
-        //                 ConfirmPassword = user.ConfirmPassword,
-        //                 UserRole = user.UserRole,
-        //                 OTP = user.OTP,
-        //                 Token = token,
-        //             }
-        //         );
-        //     }
-        //     else
-        //     {
-        //         var userCheck = await _userService.GetUserByEmailAsync(model.Email);
-        //         if (userCheck != null)
-        //         {
-        //             var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(
-        //                 userCheck.UserId
-        //             );
-        //             if (accountStatus != null && accountStatus.IsLocked)
-        //             {
-        //                 return Unauthorized("Your account has been locked. Consult the bank.");
-        //             }
-        //         }
-        //         return Unauthorized("Invalid email or password.");
-        //     }
-        // }
-
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginModel model)
@@ -124,41 +71,94 @@ namespace BankingSystem.Controllers
             {
                 return BadRequest("Password is required.");
             }
-
             var user = await _userService.UserLoginAsync(model.Email, model.Password);
             if (user != null)
             {
                 HttpContext.Session.SetString("UserId", user.UserId.ToString());
-                HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o"));
+                HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o")); // Generate JWT token
                 var token = GenerateToken(user);
-                return Ok(new { UserId = user.UserId, Name = user.Name, Email = user.Email, Token = token });
+                return Ok(
+                    new
+                    {
+                        UserId = user.UserId,
+                        Name = user.Name,
+                        Email = user.Email,
+                        Password = user.Password,
+                        ConfirmPassword = user.ConfirmPassword,
+                        UserRole = user.UserRole,
+                        OTP = user.OTP,
+                        Token = token,
+                    }
+                );
             }
             else
             {
                 var userCheck = await _userService.GetUserByEmailAsync(model.Email);
-                Console.WriteLine("User is go to null"+userCheck);
                 if (userCheck != null)
                 {
-                    var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(userCheck.UserId);
-                    Console.WriteLine(accountStatus);
-                    if (accountStatus != null)
+                    var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(
+                        userCheck.UserId
+                    );
+                    if (accountStatus != null && accountStatus.IsLocked)
                     {
-                        if (accountStatus.IsLocked)
-                        {
-                            return Unauthorized("Your account has been locked. Consult the manager.");
-                        }
-
-                        accountStatus.FailedLoginAttempts++;
-                        if (accountStatus.FailedLoginAttempts >= 3)
-                        {
-                            accountStatus.IsLocked = true;
-                        }
-                        await _userService.UpdateUserAccountStatusAsync(accountStatus);
+                        return Unauthorized("Your account has been locked. Consult the bank.");
                     }
                 }
                 return Unauthorized("Invalid email or password.");
             }
         }
+
+        // [HttpPost]
+        // [Route("login")]
+        // public async Task<IActionResult> Login([FromBody] UserLoginModel model)
+        // {
+        //     if (model == null)
+        //     {
+        //         return BadRequest("User data is required.");
+        //     }
+        //     if (string.IsNullOrWhiteSpace(model.Email))
+        //     {
+        //         return BadRequest("Email is required.");
+        //     }
+        //     if (string.IsNullOrWhiteSpace(model.Password))
+        //     {
+        //         return BadRequest("Password is required.");
+        //     }
+
+        //     var user = await _userService.UserLoginAsync(model.Email, model.Password);
+        //     if (user != null)
+        //     {
+        //         HttpContext.Session.SetString("UserId", user.UserId.ToString());
+        //         HttpContext.Session.SetString("LastLogin", DateTime.UtcNow.ToString("o"));
+        //         var token = GenerateToken(user);
+        //         return Ok(new { UserId = user.UserId, Name = user.Name, Email = user.Email, Token = token });
+        //     }
+        //     else
+        //     {
+        //         var userCheck = await _userService.GetUserByEmailAsync(model.Email);
+        //         Console.WriteLine("User is go to null"+userCheck);
+        //         if (userCheck != null)
+        //         {
+        //             var accountStatus = await _userService.GetUserAccountStatusByUserIdAsync(userCheck.UserId);
+        //             Console.WriteLine(accountStatus);
+        //             if (accountStatus != null)
+        //             {
+        //                 if (accountStatus.IsLocked)
+        //                 {
+        //                     return Unauthorized("Your account has been locked. Consult the manager.");
+        //                 }
+
+        //                 accountStatus.FailedLoginAttempts++;
+        //                 if (accountStatus.FailedLoginAttempts >= 3)
+        //                 {
+        //                     accountStatus.IsLocked = true;
+        //                 }
+        //                 await _userService.UpdateUserAccountStatusAsync(accountStatus);
+        //             }
+        //         }
+        //         return Unauthorized("Invalid email or password.");
+        //     }
+        // }
 
 
         // [HttpGet("{userId}")]

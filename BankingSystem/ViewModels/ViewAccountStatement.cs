@@ -9,10 +9,10 @@ namespace BankingSystem.ViewModels
     {
         public string AccountNumber { get; set; }
         public string HolderName { get; set; }
-        public DateTime ToDate { get; set; }
-        public DateTime FromDate { get; set; }
         public string AccountType { get; set; }
         public decimal Balance { get; set; }
+        
+        public TransactionRecords transactionRecords{get; set;}
         public List<TransactionViewModel> Transactions { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace BankingSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresses",
                 columns: table => new
                 {
                     AddressId = table.Column<int>(type: "int", nullable: false)
@@ -25,7 +25,7 @@ namespace BankingSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,33 +42,6 @@ namespace BankingSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Beneficiaries", x => x.BenId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CusId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AadhaarNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PanCardNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OccupationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SourceOfIncome = table.Column<int>(type: "int", nullable: false),
-                    GrossAnnualIncome = table.Column<int>(type: "int", nullable: false),
-                    DebitCard = table.Column<bool>(type: "bit", nullable: false),
-                    NetBanking = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.CusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,6 +102,18 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "transactionRecords",
+                columns: table => new
+                {
+                    FromDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ToDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_transactionRecords", x => x.FromDate);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAccountStatus",
                 columns: table => new
                 {
@@ -167,7 +152,7 @@ namespace BankingSystem.Migrations
                 {
                     AccountNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HolderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CusId = table.Column<int>(type: "int", nullable: false),
+                    CusId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PanCardNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AadhaarNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -182,6 +167,39 @@ namespace BankingSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ViewAccountDetails", x => x.AccountNumber);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CusId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AadhaarNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PanCardNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OccupationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SourceOfIncome = table.Column<int>(type: "int", nullable: false),
+                    GrossAnnualIncome = table.Column<int>(type: "int", nullable: false),
+                    DebitCard = table.Column<bool>(type: "bit", nullable: false),
+                    NetBanking = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CusId);
+                    table.ForeignKey(
+                        name: "FK_Customers_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,6 +229,29 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OtherBankBeneficiaries",
+                columns: table => new
+                {
+                    OtherBankBenId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConfirmAccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BenId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OtherBankBeneficiaries", x => x.OtherBankBenId);
+                    table.ForeignKey(
+                        name: "FK_OtherBankBeneficiaries_Beneficiaries_BenId",
+                        column: x => x.BenId,
+                        principalTable: "Beneficiaries",
+                        principalColumn: "BenId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WithinBankBeneficiaries",
                 columns: table => new
                 {
@@ -231,6 +272,29 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ManagerInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManagerInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ManagerInfos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
@@ -238,7 +302,7 @@ namespace BankingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HolderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CusId = table.Column<int>(type: "int", nullable: false),
+                    CusId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IFSC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -269,29 +333,6 @@ namespace BankingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ManagerInfos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BranchAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ManagerInfos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ManagerInfos_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -300,7 +341,8 @@ namespace BankingSystem.Migrations
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TransactionType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TransactionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -324,6 +366,11 @@ namespace BankingSystem.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customers_AddressId",
+                table: "Customers",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FundTransferBeneficiaries_BenId",
                 table: "FundTransferBeneficiaries",
                 column: "BenId");
@@ -332,6 +379,11 @@ namespace BankingSystem.Migrations
                 name: "IX_ManagerInfos_UserId",
                 table: "ManagerInfos",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OtherBankBeneficiaries_BenId",
+                table: "OtherBankBeneficiaries",
+                column: "BenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_AccountId",
@@ -347,9 +399,6 @@ namespace BankingSystem.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Address");
-
             migrationBuilder.DropTable(
                 name: "ForgotPassword");
 
@@ -367,6 +416,12 @@ namespace BankingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "ManagerInfos");
+
+            migrationBuilder.DropTable(
+                name: "OtherBankBeneficiaries");
+
+            migrationBuilder.DropTable(
+                name: "transactionRecords");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
@@ -391,6 +446,9 @@ namespace BankingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
         }
     }
 }

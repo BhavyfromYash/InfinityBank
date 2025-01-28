@@ -1,1 +1,65 @@
-<p>customerdashboard works!</p>
+<div class="dashboard-container">
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Left Side Hamburger Menu -->
+            <div class="left-navbar">
+                <button class="navbar-toggler" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+
+            <!-- Brand -->
+            <a class="navbar-brand" routerLink="/">
+                <i class="bi bi-bank2"></i> InfinityBank
+            </a>
+
+            <!-- Right Side Circle Dropdown Button -->
+            <div class="right-navbar" [class.active]="isDropdownOpen">
+                <button class="circle-btn" (click)="toggleDropdown()">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="nav-content" [class.visible]="isDropdownOpen">
+                    <nav class="nav-links">
+                        <a (click)="toggleDropdown()" routerLink="/view-profile" class="nav-item">
+                            <i class="bi bi-person-circle"></i> View Profile
+                        </a>
+                        <a (click)="toggleDropdown()" routerLink="/create-customer" class="nav-item">
+                            <i class="bi bi-person-plus"></i> Create Customer
+                        </a>
+                        <a (click)="toggleDropdown()" routerLink="/logout" class="nav-item">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Left Sidebar -->
+    <div class="sidebar" [class.open]="isSidebarOpen">
+        <nav class="nav-left">
+            <ul><br><br>
+                <li><a class="nav-item" routerLink="/account-details"> <i class="bi bi-info-circle"></i> Account Details
+                    </a></li><br>
+                <li><a class="nav-item" routerLink="/account-summary"> <i class="bi bi-list-check"></i> Account Summary
+                    </a></li><br>
+                <li><a class="nav-item" routerLink="/funds-transfer"> <i class="bi bi-arrow-left-right"></i> Funds
+                        Transfer </a></li><br>
+                <li><a class="nav-item" routerLink="/account-statement"> <i class="bi bi-file-text"></i> Account
+                        Statement </a></li><br>
+                
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Welcome to the Customer Dashboard</h1>
+        <li><a class="nav-item" routerLink="/view-balance"> <i class="bi bi-file-text"></i> View
+            Balance </a></li><br>
+    </div>
+
+    <!-- Overlay for Sidebar -->
+    <div class="overlay" [class.active]="isSidebarOpen" (click)="toggleSidebar()"></div>
+</div>

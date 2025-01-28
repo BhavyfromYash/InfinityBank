@@ -22,8 +22,11 @@ export class SessionExpiredPopupComponent {
   constructor(private router: Router) { }
 
   redirectToLogin(): void {
+    // sessionStorage.removeItem("userRole");
+    // sessionStorage.removeItem("loginToken");
     this.router.navigate(['/login']);
-    
   }
+
+
 
 }

@@ -15,11 +15,11 @@ namespace BankingSystem.Services
 
         Task<ShowAccountBalance> ShowAccountBalanceAsync(int userId);
 
-        Task TransferFundsAsync(
-            FundTransferBeneficiary fundTransferBeneficiary,
-            decimal amount,
-            string remarks
-        );
+        // Task TransferFundsAsync(
+        //     FundTransferBeneficiary fundTransferBeneficiary,
+        //     decimal amount,
+        //     string remarks
+        // );
         Task TransferFundsWithinBankAsync(
             int senderUserId,
             WithinBankBeneficiary withinBankBeneficiary,
@@ -27,5 +27,10 @@ namespace BankingSystem.Services
             string remarks,
             string transMode
         );
+        Task TransferFundsToOtherBankByIdAsync(
+             int senderUserId,
+             OtherBankViewModel otherBankViewModel,
+             string transMode
+         );
     }
 }

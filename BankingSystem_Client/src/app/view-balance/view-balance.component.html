@@ -1,0 +1,8 @@
+<div>
+    <h2>Show Account Balance</h2>
+    <div *ngIf="balance">
+      <h3>Account Number: {{ balance.accountNumber }}</h3>
+      <h3>Available Balance: {{ balance.availableBalance | currency }}</h3>
+    </div>
+  </div>
+  

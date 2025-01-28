@@ -1,0 +1,123 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+}
+
+/* Container Styles */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1200;
+}
+
+.navbar-toggler {
+    border: none;
+    background: none;
+    color: goldenrod;
+    font-size: 2.3rem;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 60px; /* Match the height of the navbar */
+    left: -250px;
+    width: 250px;
+    height: calc(100% - 60px);
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1100;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+/* Navbar Dropdown */
+.nav-content {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: whitesmoke;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.nav-content.visible {
+    display: block;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.nav-links .nav-item {
+    margin-bottom: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.nav-links .nav-item:hover {
+    background: #f1f1f1;
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar-toggler i {
+        font-size: 1.8rem;
+    }
+
+    .navbar {
+        padding: 0.5rem 0;
+    }
+}
+
+@media (min-width: 769px) {
+    .navbar-toggler {
+        display: block; /* Ensure the hamburger menu is always visible */
+    }
+
+    .sidebar {
+        left: 0; /* Keep the sidebar open on larger screens */
+    }
+
+    .nav-content {
+        right: 5px; /* Align dropdown on larger screens */
+    }
+}

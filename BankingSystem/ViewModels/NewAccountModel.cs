@@ -14,7 +14,7 @@ namespace BankingSystem.ViewModels
         public string AccountNumber { get; set; }
 
         [Required]
-        public int CusId { get; set; }
+        public string CusId { get; set; }
 
         [Required]
         public string AccountType { get; set; }
@@ -27,12 +27,6 @@ namespace BankingSystem.ViewModels
 
         [Required]
         public string BranchAddress { get; set; }
-
-        [Required]
-        public DateTime ToDate { get; set; }
-
-        [Required]
-        public DateTime FromDate { get; set; }
 
         [Required]
         public string BranchPhoneNo { get; set; }

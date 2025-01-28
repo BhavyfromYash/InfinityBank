@@ -13,15 +13,6 @@ namespace BankingSystem.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<Customer>()
-                .HasOne(c => c.Address) // Sets up the one-to-one relationship
-                .WithOne()
-                .HasForeignKey<Customer>(c => c.CusId);
-            base.OnModelCreating(modelBuilder);
-        }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<LogOut> LogOuts { get; set; }
         public DbSet<ForgotPassword> ForgotPassword { get; set; }
@@ -35,5 +26,7 @@ namespace BankingSystem.Models
         public DbSet<AccountDetailsViewModel> ViewAccountDetails { get; set; }
         public DbSet<FundTransferBeneficiary> FundTransferBeneficiaries { get; set; }
         public DbSet<WithinBankBeneficiary> WithinBankBeneficiaries { get; set; }
+        public DbSet<OtherBankBeneficiary> OtherBankBeneficiaries { get; set; }
+        public DbSet<TransactionRecords> transactionRecords { get; set; }
     }
 }

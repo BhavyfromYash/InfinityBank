@@ -7,7 +7,13 @@ namespace BankingSystem.Services
 {
     public interface ICustomerService
     {
-        Task<Customer> CreateCustomerAsync(Customer newCustomer);
-        Task<Customer> GetCustomerByIdAsync(int cusId);
+        Task<Customer> CreateCustomerDetailsByIdAsync(
+            int userId,
+            CustomerCreationModel newCustomerDetails
+        );
+        Task<bool> IsUserExistsAsync(int userId);
+        Task<Customer> GetCustomerByIdAsync(string cusId);
+        Task<bool> IsCustomerDetailsUniqueAsync(string aadhaarNo, string panCardNo);
+
     }
 }

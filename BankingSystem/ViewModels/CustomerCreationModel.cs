@@ -21,6 +21,7 @@ namespace BankingSystem.ViewModels
         public int GrossAnnualIncome { get; set; }
         public bool DebitCard { get; set; }
         public bool NetBanking { get; set; }
-        public string Status { get; set; }
+
+        public AddressViewModel Address { get; set; }
     }
 }

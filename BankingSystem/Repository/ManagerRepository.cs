@@ -8,10 +8,18 @@ namespace BankingSystem.Repository
     public class ManagerRepository : IManagerService
     {
         private readonly BankDbContext _context;
+        private readonly ILogger<ManagerRepository> _logger;
+        // private readonly IEmailService _emailService;
 
-        public ManagerRepository(BankDbContext context)
+        public ManagerRepository(
+            BankDbContext context,
+            ILogger<ManagerRepository> logger
+            // EmailRepository emailService
+        )
         {
+            _logger = logger;
             _context = context;
+            // _emailService = emailService;
         }
 
         public async Task<ManagerInfo> CreateManagerAsync(ManagerInfo managerInfo)
@@ -68,7 +76,7 @@ namespace BankingSystem.Repository
             return await _context.Customers.ToListAsync();
         }
 
-        public async Task<Customer> ApproveCustomerRequestAsync(int cusId)
+        public async Task<Customer> ApproveCustomerRequestAsync(string cusId)
         {
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CusId == cusId);
             if (customer == null || customer.Status != "Pending")
@@ -78,7 +86,7 @@ namespace BankingSystem.Repository
             return customer;
         }
 
-        public async Task<Customer> RejectCustomerRequestAsync(int cusId)
+        public async Task<Customer> RejectCustomerRequestAsync(string cusId)
         {
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CusId == cusId);
             if (customer == null || customer.Status != "Pending")
@@ -110,5 +118,28 @@ namespace BankingSystem.Repository
         {
             return await _context.Customers.Where(c => c.Status == "Pending").ToListAsync();
         }
+
+        // public async Task SendReferenceNumberForApproval(string referenceNumber, string cusId)
+        // {
+        //     var managers = await _context.ManagerInfos.Select(m => m.User.Email).ToListAsync();
+        //     var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CusId == cusId);
+
+        //     if (customer == null)
+        //     {
+        //         throw new ArgumentException("Customer not found");
+        //     }
+
+        //     var subject = "New Customer Registration Approval Needed";
+        //     var body =
+        //         $"Customer '{customer.Fname} {customer.Lname}' with reference number '{referenceNumber}' requires your approval.";
+
+        //     var from = new List<string> { "noreply@example.com" }; // Use a generic from address or multiple if needed
+
+        //     await _emailService.SendEmailAsync(managers, from, subject, body);
+        //     _logger.LogInformation(
+        //         $"Email sent to managers with subject '{subject}' and body '{body}'"
+        //     );
+        // }
+        
     }
 }

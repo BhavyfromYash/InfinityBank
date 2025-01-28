@@ -7,7 +7,7 @@ namespace BankingSystem.ViewModels
 {
     public class AccountSummaryViewModel
     {
-        public int CusId { get; set; }
+        public string CusId { get; set; }
         public string HolderName { get; set; }
         public string BranchName { get; set; }
         public string AccountNumber { get; set; }

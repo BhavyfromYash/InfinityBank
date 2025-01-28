@@ -189,7 +189,7 @@ namespace BankingSystem.Controllers
         }
 
         [HttpPost("approve-request/{cusId}")]
-        public async Task<IActionResult> ApproveCustomerRequest(int cusId)
+        public async Task<IActionResult> ApproveCustomerRequest(string cusId)
         {
             var customer = await _managerService.ApproveCustomerRequestAsync(cusId);
             if (customer == null)
@@ -200,7 +200,7 @@ namespace BankingSystem.Controllers
         }
 
         [HttpPost("reject-request/{cusId}")]
-        public async Task<IActionResult> RejectCustomerRequest(int cusId)
+        public async Task<IActionResult> RejectCustomerRequest(string cusId)
         {
             var customer = await _managerService.RejectCustomerRequestAsync(cusId);
             if (customer == null)
@@ -209,6 +209,7 @@ namespace BankingSystem.Controllers
             }
             return Ok(customer);
         }
+        
 
         // [HttpPost("unlock/{userId}")]
         // public async Task<IActionResult> UnlockUserAccount(int userId)
@@ -236,6 +237,5 @@ namespace BankingSystem.Controllers
 
             return Ok("User account has been unlocked.");
         }
-
     }
 }
